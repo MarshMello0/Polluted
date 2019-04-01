@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\Beny2\.Rider2018.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Beny2\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_Polluted.1635747112.00" t="ExcludeRecursive" />
-    <e p="E:\Code\Polluted" t="IncludeRecursive">
+    <e p="C:\Users\Beny2\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_Polluted.942645415.00" t="ExcludeRecursive" />
+    <e p="D:\Code\Polluted" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
+          <e p="FileManager.cs" t="Include" />
           <e p="Game" t="Include">
             <e p="ItemDatabase.cs" t="Include" />
             <e p="Player" t="Include">
@@ -19,7 +20,12 @@
               <e p="PlayerController.cs" t="Include" />
             </e>
           </e>
+          <e p="Loading" t="Include">
+            <e p="Loading.cs" t="Include" />
+          </e>
           <e p="Main Menu" t="Include">
+            <e p="ControlsUI.cs" t="Include" />
+            <e p="DefaultBindings.cs" t="Include" />
             <e p="MainMenuManger.cs" t="Include" />
           </e>
           <e p="TMPButton.cs" t="Include" />

@@ -1,0 +1,7 @@
+bind A forward 
+bind S back 
+bind A left 
+bind D right 
+bind Space jump 
+bind LeftShift sprint 
+bind Tab inventory 

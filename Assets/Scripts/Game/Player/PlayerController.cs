@@ -46,12 +46,11 @@ public class PlayerController : MonoBehaviour
         _cameraTransform = transform.GetChild(0);
         _inventoryManager = GetComponent<InventoryManager>();
         maxSpeed = maxWalkingSpeed;
+        SetControls();
     }
 
     private void Update()
     {
-        
-        
         CameraMovement();
     }
 
@@ -164,4 +163,39 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !state;
     }
+
+    private void SetControls()
+    {
+        List<Binding> bindings = FileManager.GetPlayersConfigAsBindings();
+
+        for (int i = 0; i < bindings.Count; i++)
+        {
+            Binding lastBind = bindings[i];
+            switch (lastBind.commandName)
+            {
+                case "jump":
+                    kJump = lastBind.binding;
+                    break;
+                case "forward":
+                    kForward = lastBind.binding;
+                    break;
+                case "back":
+                    kBackward = lastBind.binding;
+                    break;
+                case "left":
+                    kLeft = lastBind.binding;
+                    break;
+                case "right":
+                    kRight = lastBind.binding;
+                    break;
+                case "sprint":
+                    kSprint = lastBind.binding;
+                    break;
+                case "inventory":
+                    kInventory = lastBind.binding;
+                    break;
+            }
+        }
+    }
+    
 }
