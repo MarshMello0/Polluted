@@ -169,17 +169,20 @@ public class ControlsUI : MonoBehaviour
             lastBinding.binding == KeyCode.Mouse5 ||
             lastBinding.binding == KeyCode.Mouse6)
         {
-            lastKey.GetComponentInChildren<TextMeshProUGUI>().text = "";
             lastMouse.GetComponentInChildren<TextMeshProUGUI>().text = GetKeyName(lastBinding.binding);
         }
         else
         {
             lastKey.GetComponentInChildren<TextMeshProUGUI>().text = GetKeyName(lastBinding.binding);
-            lastMouse.GetComponentInChildren<TextMeshProUGUI>().text = "";
         }
     }
 
     private void OnDisable()
+    {
+        SaveControls();
+    }
+
+    public void SaveControls()
     {
         FileManager.SavePlayerConfig(keyBindings);
     }

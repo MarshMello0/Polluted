@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Slot
   - DropItem
+  - Pickupable
+  - RoadCollider
   layers:
   - Default
   - TransparentFX

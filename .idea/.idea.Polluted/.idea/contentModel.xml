@@ -4,12 +4,36 @@
     <e p="C:\Users\Beny2\.Rider2018.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Beny2\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_Polluted.942645415.00" t="ExcludeRecursive" />
     <e p="D:\Code\Polluted" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="Tools" t="Include">
+            <e p="MapGeneratorEditor.cs" t="Include" />
+          </e>
+        </e>
         <e p="Scripts" t="Include">
           <e p="FileManager.cs" t="Include" />
           <e p="Game" t="Include">
             <e p="ItemDatabase.cs" t="Include" />
+            <e p="Map" t="Include">
+              <e p="Road Generation" t="Include">
+                <e p="ColliderCallBack.cs" t="Include" />
+                <e p="Road.cs" t="Include" />
+                <e p="RoadGenerator.cs" t="Include" />
+              </e>
+              <e p="Terrain Generation" t="Include">
+                <e p="EndlessTerrain.cs" t="Include" />
+                <e p="FalloffGenerator.cs" t="Include" />
+                <e p="HideOnPlay.cs" t="Include" />
+                <e p="MapDisplay.cs" t="Include" />
+                <e p="MapGenerator.cs" t="Include" />
+                <e p="MeshGenerator.cs" t="Include" />
+                <e p="Noise.cs" t="Include" />
+                <e p="TextureGenerator.cs" t="Include" />
+              </e>
+            </e>
+            <e p="PauseMenuManager.cs" t="Include" />
             <e p="Player" t="Include">
               <e p="Inventory" t="Include">
                 <e p="CustomScrollRect.cs" t="Include" />
@@ -28,6 +52,7 @@
             <e p="DefaultBindings.cs" t="Include" />
             <e p="MainMenuManger.cs" t="Include" />
           </e>
+          <e p="Mouse.cs" t="Include" />
           <e p="TMPButton.cs" t="Include" />
           <e p="TMPMatchSize.cs" t="Include" />
         </e>

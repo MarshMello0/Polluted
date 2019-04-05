@@ -17,6 +17,11 @@ public class TMPMatchSize : MonoBehaviour
         UpdateSizes();
     }
 
+    private void OnValidate()
+    {
+        UpdateSizes();
+    }
+
     [ContextMenu("Update Sizes")]
     public void UpdateSizes()
     {

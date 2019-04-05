@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemDatabase : ScriptableObject
 {
     public List<Item> items = new List<Item>();
-
+    
     public Item GetItemByID(int id)
     {
         for (int i = 0; i < items.Count; i++)
@@ -31,7 +31,7 @@ public class ItemDatabase : ScriptableObject
                 return items[i];
             }
         }
-        Debug.LogError(string.Format("Coudln't find an item with the display name of {0}", displayName));
+        Debug.LogError(string.Format("Couldn't find an item with the display name of {0}", displayName));
         return null;
     }
 }

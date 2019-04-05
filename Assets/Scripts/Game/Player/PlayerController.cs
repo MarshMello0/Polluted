@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private Rigidbody _rigidbody;
 
-    private bool inUI;
+    [HideInInspector]
+    public bool inUI;
     private InventoryManager _inventoryManager;
 
     private void Awake()
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
         _inventoryManager = GetComponent<InventoryManager>();
         maxSpeed = maxWalkingSpeed;
         SetControls();
+        Mouse.Lock(true);
     }
 
     private void Update()
@@ -64,17 +66,15 @@ public class PlayerController : MonoBehaviour
             {
                 _inventoryManager.CloseUI();
                 inUI = false;
-                LockCursor(true);
+                Mouse.Lock(true);
             }
         }
         else if (Input.GetKeyDown(kInventory) && !inUI)
         {
             _inventoryManager.OpenUI(InventoryManager.UIType.Inventory);
             inUI = true;
-            LockCursor(false);
+            Mouse.Lock(false);
         }
-        
-
     }
 
     private void Movement()
@@ -148,23 +148,13 @@ public class PlayerController : MonoBehaviour
     {
         if (inUI)
             return;
-        if (Cursor.lockState != CursorLockMode.Locked)
-        {
-            LockCursor(true);
-        }
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
         rotationY += Input.GetAxis("Mouse Y") * sensitivity;
         rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
         _cameraTransform.localEulerAngles = new Vector3(-rotationY, 0, 0);
     }
     
-    public void LockCursor(bool state)
-    {
-        Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !state;
-    }
-
-    private void SetControls()
+    public void SetControls()
     {
         List<Binding> bindings = FileManager.GetPlayersConfigAsBindings();
 
@@ -197,5 +187,4 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
 }
