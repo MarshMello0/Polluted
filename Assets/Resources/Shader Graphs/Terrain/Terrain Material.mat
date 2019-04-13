@@ -231,4 +231,4 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _grassColour: {r: 0, g: 0.31132078, b: 0.026838003, a: 0}
     - _stoneColour: {r: 0.4039216, g: 0.4039216, b: 0.4039216, a: 1}
-    - _waterColour: {r: 0, g: 0.2264151, b: 0.018651657, a: 1}
+    - _waterColour: {r: 0, g: 0.22641507, b: 0.6784314, a: 1}

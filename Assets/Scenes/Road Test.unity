@@ -303,32 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288ccd57ec97cf64da8ead698bb5803d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadTypes:
-  - name: M Road
-    maxTurnAngle: 20
-    maxPointDistance: 100
-    minPointDistance: 50
-    amountOfPoints: 50
-    amount: 1
-    debugColour: {r: 0, g: 0, b: 1, a: 1}
-    id: 0
-  - name: A Road
-    maxTurnAngle: 45
-    maxPointDistance: 50
-    minPointDistance: 10
-    amountOfPoints: 25
-    amount: 50
-    debugColour: {r: 0, g: 0.41960785, b: 0, a: 1}
-    id: 1
-  - name: S Road
-    maxTurnAngle: 90
-    maxPointDistance: 30
-    minPointDistance: 10
-    amountOfPoints: 5
-    amount: 80
-    debugColour: {r: 1, g: 1, b: 1, a: 1}
-    id: 2
-  roads: []
+  roadDebugLine: {fileID: 7863366091513682979, guid: a5e9cf98d4c75da4fb046bd51b9279a5,
+    type: 3}
 --- !u!4 &667074450
 Transform:
   m_ObjectHideFlags: 0
@@ -354,6 +330,7 @@ GameObject:
   - component: {fileID: 768090209}
   - component: {fileID: 768090208}
   - component: {fileID: 768090207}
+  - component: {fileID: 768090210}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -404,8 +381,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -425,3 +402,66 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768090210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768090206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  clearColorMode: 0
+  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  clearDepth: 1
+  renderingPath: 0
+  volumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  volumeAnchorOverride: {fileID: 0}
+  aperture: 8
+  shutterSpeed: 0.005
+  iso: 400
+  m_FrameSettings:
+    overrides: 0
+    enableShadow: 1
+    enableContactShadows: 1
+    enableShadowMask: 1
+    enableSSR: 0
+    enableSSAO: 1
+    enableSubsurfaceScattering: 1
+    enableTransmission: 1
+    enableAtmosphericScattering: 1
+    enableVolumetrics: 1
+    enableReprojectionForVolumetrics: 1
+    enableLightLayers: 1
+    diffuseGlobalDimmer: 1
+    specularGlobalDimmer: 1
+    shaderLitMode: 1
+    enableDepthPrepassWithDeferredRendering: 0
+    enableTransparentPrepass: 1
+    enableMotionVectors: 1
+    enableObjectMotionVectors: 1
+    enableDecals: 1
+    enableRoughRefraction: 1
+    enableTransparentPostpass: 1
+    enableDistortion: 1
+    enablePostprocess: 1
+    enableAsyncCompute: 1
+    enableOpaqueObjects: 1
+    enableTransparentObjects: 1
+    enableRealtimePlanarReflection: 1
+    enableMSAA: 0
+    lightLoopSettings:
+      overrides: 0
+      enableTileAndCluster: 1
+      enableComputeLightEvaluation: 1
+      enableComputeLightVariants: 1
+      enableComputeMaterialVariants: 1
+      enableFptlForForwardOpaque: 1
+      enableBigTilePrepass: 1
+      isFptlEnabled: 1

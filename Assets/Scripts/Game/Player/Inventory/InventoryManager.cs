@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.ShaderGraph;
 using UnityEngine.EventSystems;
-using UnityEngine.Experimental.Rendering.HDPipeline.Attributes;
 
 public class InventoryManager : MonoBehaviour
 {
