@@ -9,6 +9,10 @@ public class RoadThread : ThreadedJob
 {
     //This log action is so I can do debug.log on the main thread
     public Action<string> log;
+    //This is the position used it road generator
+    public Vector3 position;
+    //This is the seed used to generate that city
+    public int seed;
     
     public GeneratedSlot[,] citySlots;
     public List<Road> roads;
@@ -22,7 +26,7 @@ public class RoadThread : ThreadedJob
          * I could of split each type of generation into their own methods, but I just used regions instead :/
          */
         //The C# Random instance
-        Random rnd = new Random();
+        Random rnd = new Random(seed);
         
         
         //Set the size of the whole city
@@ -361,7 +365,7 @@ public class RoadThread : ThreadedJob
         }
     }
 }
-
+[Serializable]
 public class GeneratedSlot
 {
 
@@ -402,7 +406,7 @@ public class EmptySlot : GeneratedSlot
 {
     
 }
-
+[Serializable]
 public class Road
 {
     public Vector3[] points;

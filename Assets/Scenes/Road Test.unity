@@ -303,8 +303,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288ccd57ec97cf64da8ead698bb5803d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  createDebugLines: 0
   roadDebugLine: {fileID: 7863366091513682979, guid: a5e9cf98d4c75da4fb046bd51b9279a5,
     type: 3}
+  cityDistance: 100
+  spawnSize: 300
+  cities: []
+  connectingRoads: []
 --- !u!4 &667074450
 Transform:
   m_ObjectHideFlags: 0

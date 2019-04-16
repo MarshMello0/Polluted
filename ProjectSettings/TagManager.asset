@@ -8,6 +8,7 @@ TagManager:
   - DropItem
   - Pickupable
   - RoadPoint
+  - Terrain
   layers:
   - Default
   - TransparentFX

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.EventSystems;
-using UnityEngine.Experimental.PlayerLoop;
 
 public class ControlsUI : MonoBehaviour
 {
     [Header("Bindings")]
-    [SerializeField] private List<Binding> keyBindings = new List<Binding>();
+    public List<Binding> keyBindings = new List<Binding>();
 
     [Space]
     
@@ -25,6 +23,8 @@ public class ControlsUI : MonoBehaviour
     [Space] 
     [Header("Press Any Key GameObject")] 
     [SerializeField] private GameObject pak;
+
+    [SerializeField] private SettingsManager settingsManager;
 
     private bool isChangingKey;
     private string keyChanging;
@@ -53,6 +53,13 @@ public class ControlsUI : MonoBehaviour
     {
         keyBindings.Clear();
         List<Binding> bindings = FileManager.GetPlayersConfigAsBindings();
+        //In case the player config hasn't been created already
+        if (bindings.Count == 0)
+        {
+            CustomDebug.Log(CustomDebug.Type.Log,"Loading Default Controls");
+            LoadDefaultBindings();
+            return;
+        }
         for (int i = 0; i < bindings.Count; i++)
         {
             Binding lastBind = new Binding(
@@ -184,23 +191,6 @@ public class ControlsUI : MonoBehaviour
 
     public void SaveControls()
     {
-        FileManager.SavePlayerConfig(keyBindings);
+        FileManager.SavePlayerConfig(keyBindings, settingsManager.settings);
     }
 }
-
-[System.Serializable]
-public class Binding
-{
-    public string displayName;
-    public string commandName;
-    public EventTrigger.TriggerEvent action; //Unsure about this one at the moment
-    public KeyCode binding;
-
-    public Binding(string displayName, string commandName, KeyCode binding)
-    {
-        this.displayName = displayName;
-        this.commandName = commandName;
-        this.binding = binding;
-    }
-}
-

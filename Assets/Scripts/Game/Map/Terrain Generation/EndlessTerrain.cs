@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class EndlessTerrain : MonoBehaviour {
 
@@ -27,18 +28,39 @@ public class EndlessTerrain : MonoBehaviour {
 
 	private static float waterHeight = 5f;
 	private static float grassHeight = 20f;
-	
+
+	[SerializeField] private RoadGenerator roadGenerator;
+	[HideInInspector]
+	public Loading loading;
+	[HideInInspector]
+	public bool isLoading;
+
+	private void Awake()
+	{
+		isLoading = true;
+		int i_viewDistance = FileManager.GetIntValueFromConfig("i_viewdistance");
+		detailLevels = new LODInfo[3];
+		detailLevels[0] = new LODInfo(0,i_viewDistance * 100,true);
+		detailLevels[1] = new LODInfo(1,i_viewDistance * 200,false);
+		detailLevels[2] = new LODInfo(2,i_viewDistance * 300,false);
+		loading = FindObjectOfType<Loading>();
+	}
+
 	void Start() {
 		mapGenerator = FindObjectOfType<MapGenerator> ();
 
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
+		CustomDebug.Log(CustomDebug.Type.Log, string.Format("EndlessTerrain.cs : {0}",chunksVisibleInViewDst));
 
 		UpdateVisibleChunks ();
 	}
 
-	void Update() {
+	void Update()
+	{
+		if (isLoading && SceneManager.sceneCount.Equals(1))
+			isLoading = false;
 		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / scale;
 
 		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
@@ -64,11 +86,18 @@ public class EndlessTerrain : MonoBehaviour {
 				if (terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
 					terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
 				} else {
-					terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial));
+					terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial, this));
+					
+					//Finished Loading chunk here
+					if (isLoading)
+					{
+						loading.numberOfActionsCompleted++;
+					}
 				}
-
 			}
 		}
+		
+		roadGenerator.FlattenMesh();
 	}
 
 	public class TerrainChunk {
@@ -89,14 +118,17 @@ public class EndlessTerrain : MonoBehaviour {
 		bool mapDataReceived;
 		int previousLODIndex = -1;
 
-		public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, Transform parent, Material material) {
+		private EndlessTerrain endlessTerrain;
+		public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, Transform parent, Material material, EndlessTerrain endlessTerrain) {
 			this.detailLevels = detailLevels;
+			this.endlessTerrain = endlessTerrain;
 
 			position = coord * size;
 			bounds = new Bounds(position,Vector2.one * size);
 			Vector3 positionV3 = new Vector3(position.x,0,position.y);
 
 			meshObject = new GameObject("Chunk " + positionV3);
+			meshObject.tag = "Terrain";
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
@@ -124,7 +156,7 @@ public class EndlessTerrain : MonoBehaviour {
 
 			Texture2D texture = TextureGenerator.TextureFromColourMap (mapData.colourMap, MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
 			meshRenderer.material.mainTexture = texture;
-
+			
 			UpdateTerrainChunk ();
 		}
 
@@ -236,6 +268,13 @@ public class EndlessTerrain : MonoBehaviour {
 		public int lod;
 		public float visibleDstThreshold;
 		public bool useForCollider;
+
+		public LODInfo(int lod, float visibleDstThreshold, bool useForCollider)
+		{
+			this.lod = lod;
+			this.visibleDstThreshold = visibleDstThreshold;
+			this.useForCollider = useForCollider;
+		}
 	}
 
 }
