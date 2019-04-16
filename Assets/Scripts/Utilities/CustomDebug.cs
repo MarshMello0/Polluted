@@ -26,6 +26,6 @@ public static class CustomDebug
 
         finalMessage += message;
         finalMessage += " </color>";
-        UnityEngine.Debug.unityLogger.Log(LogType.Log,finalMessage);
+        Debug.Log(finalMessage);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEngine.EventSystems;
 
 public static class FileManager
@@ -29,7 +30,6 @@ public static class FileManager
     private const string folderConfig = @"\Configs";
     //Player Config - This will store the players controls
     private const string filePlayerConfig = @"\Player Config" + fileExtension;
-
 
     public static List<Binding> GetPlayersConfigAsBindings()
     {
@@ -191,7 +191,6 @@ public static class FileManager
             {
                 file += string.Format("setting {0} {1} \n", settings[i].settingName, settings[i].value);
             }
-            CustomDebug.Log(CustomDebug.Type.Log, "Saving to players config");
             File.WriteAllText(GetCurrentDirectory() + folderConfig + filePlayerConfig,file);
             isSaving = false;
         }

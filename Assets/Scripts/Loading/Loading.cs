@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Loading : MonoBehaviour
 {
     //This is the total number of things needed to be completed before the player can play
@@ -10,13 +11,12 @@ public class Loading : MonoBehaviour
     //This is the current number of actions done by the clients machine
     public int numberOfActionsCompleted = 0;
     private DateTime startTime;
+    [SerializeField] private Slider slider;
     private void Awake()
     {
         startTime = DateTime.Now;
         CalActions();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
-        Time.timeScale = 0;
-        
     }
 
     private void CalActions()
@@ -29,8 +29,14 @@ public class Loading : MonoBehaviour
         float chunkSize = 94;
         int chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize) ;
         int amountOfChunks = ((chunksVisibleInViewDst * 2) + 1) * ((chunksVisibleInViewDst * 2) + 1);
-        CustomDebug.Log(CustomDebug.Type.Log, string.Format("Loading.cs : {0}",chunksVisibleInViewDst));
         totalNumberOfActions += amountOfChunks;
+    }
+
+    private void FixedUpdate()
+    {
+        float a = numberOfActionsCompleted;
+        float b = totalNumberOfActions;
+        slider.value =  a / b;
     }
 
     private void LateUpdate()
@@ -42,20 +48,5 @@ public class Loading : MonoBehaviour
             CustomDebug.Log(CustomDebug.Type.Log, string.Format("Finished loading in {0} milliseconds", duration.TotalMilliseconds));
             SceneManager.UnloadSceneAsync(1);
         }
-    }
-
-
-    IEnumerator LoadYourAsyncScene()
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(2);
-        
-
-        // Wait until the asynchronous scene fully loads
-        while (!asyncLoad.isDone)
-        {
-            CustomDebug.Log(CustomDebug.Type.Log, "Loading Scene " + (asyncLoad.progress * 100) + "%");
-            yield return null;
-        }
-        CustomDebug.Log(CustomDebug.Type.Log,"Done Loading");
     }
 }

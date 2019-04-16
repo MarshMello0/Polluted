@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -52,9 +53,8 @@ public class EndlessTerrain : MonoBehaviour {
 		maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
-		CustomDebug.Log(CustomDebug.Type.Log, string.Format("EndlessTerrain.cs : {0}",chunksVisibleInViewDst));
 
-		UpdateVisibleChunks ();
+		StartCoroutine(UpdateVisibleChunks());
 	}
 
 	void Update()
@@ -65,11 +65,11 @@ public class EndlessTerrain : MonoBehaviour {
 
 		if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate) {
 			viewerPositionOld = viewerPosition;
-			UpdateVisibleChunks ();
+			StartCoroutine(UpdateVisibleChunks());
 		}
 	}
 		
-	void UpdateVisibleChunks() {
+	private IEnumerator UpdateVisibleChunks() {
 
 		for (int i = 0; i < terrainChunksVisibleLastUpdate.Count; i++) {
 			terrainChunksVisibleLastUpdate [i].SetVisible (false);
@@ -80,24 +80,31 @@ public class EndlessTerrain : MonoBehaviour {
 		int currentChunkCoordY = Mathf.RoundToInt (viewerPosition.y / chunkSize);
 
 		for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) {
-			for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) {
+			for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) 
+			{
+				yield return new WaitForEndOfFrame();
 				Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
 
 				if (terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
 					terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
 				} else {
-					terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial, this));
-					
-					//Finished Loading chunk here
-					if (isLoading)
-					{
-						loading.numberOfActionsCompleted++;
-					}
+					terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial,
+						this));
 				}
 			}
 		}
 		
 		roadGenerator.FlattenMesh();
+	}
+
+	public void FinishedLoadingChunk()
+	{
+		//Finished Loading chunk here
+		if (isLoading)
+		{
+			loading.numberOfActionsCompleted++;
+		}
+		
 	}
 
 	public class TerrainChunk {
@@ -156,7 +163,7 @@ public class EndlessTerrain : MonoBehaviour {
 
 			Texture2D texture = TextureGenerator.TextureFromColourMap (mapData.colourMap, MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
 			meshRenderer.material.mainTexture = texture;
-			
+			endlessTerrain.FinishedLoadingChunk();
 			UpdateTerrainChunk ();
 		}
 
