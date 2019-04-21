@@ -19,16 +19,21 @@ public class RoadGenerator : MonoBehaviour
 
     [SerializeField] private int spawnSize = 1000;
     private int minAmount = 0;
-    
+    [Header("Prefabs")] 
+    [SerializeField] private GameObject terrainLoader;
+    [Header("Cities")]
     //Cities
-    [SerializeField] private List<City> cities = new List<City>();
+    public List<City> cities = new List<City>();
     [SerializeField] private List<Road> connectingRoads = new List<Road>();
 
+    private Loading loading;
     private bool areConnected;
+    private bool meshFlattened;
     private void Awake()
     {
-        rnd = new Random(0);
-        minAmount = Mathf.FloorToInt((spawnSize * 2f) / (cityDistance * 2f));
+        loading = FindObjectOfType<Loading>();
+        rnd = new Random(FindObjectOfType<GameInfo>().seed);
+        minAmount = Mathf.FloorToInt(Mathf.RoundToInt((spawnSize * 94) * 2.5f) / (cityDistance * 2f));
         for (int i = 0; i < minAmount; i++)
         {
             Generator();
@@ -47,8 +52,11 @@ public class RoadGenerator : MonoBehaviour
     {
         int x = rnd.Next(-spawnSize,spawnSize);
         int z = rnd.Next(-spawnSize,spawnSize);
-            
-        Vector3 position = new Vector3(x,0,z);
+        x *= 94;
+        x = Mathf.RoundToInt(x * 2.5f);
+        z *= 94;
+        z = Mathf.RoundToInt(z * 2.5f);
+        Vector3 position = new Vector3(x - 50,0,z - 50);
 
         for (int j = 0; j < cities.Count; j++)
         {
@@ -59,8 +67,7 @@ public class RoadGenerator : MonoBehaviour
                 return;
             }
         }
-        
-        GenerateNewCity(new Vector3(x,0,z));
+        GenerateNewCity(position);
     }
     
 
@@ -82,11 +89,14 @@ public class RoadGenerator : MonoBehaviour
         //This will wait for that thread to be complete
         yield return StartCoroutine(roadThread.WaitFor());
 
+        string cityName = Cities.GetRandomName();
         if (createDebugLines)
         {
+            GameObject parent = new GameObject(cityName);
+            parent.transform.position = roadThread.position;
             for (int i = 0; i < roadThread.roads.Count; i++)
             {
-                GameObject last = Instantiate(roadDebugLine);
+                GameObject last = Instantiate(roadDebugLine, parent.transform);
                 last.name = string.Format("{0}{1} Road", roadThread.roads[i].roadType.ToString(), i);
                 LineRenderer lineRenderer = last.GetComponent<LineRenderer>();
                 lineRenderer.positionCount = roadThread.roads[i].points.Length;
@@ -109,9 +119,8 @@ public class RoadGenerator : MonoBehaviour
                 }
             }
         }
-        
         //Adding to the cities list for help connecting roads
-        cities.Add(new City(Cities.GetRandomName(),roadThread.citySlots,roadThread.roads, roadThread.position));
+        cities.Add(new City(cityName,roadThread.citySlots,roadThread.roads, roadThread.position));
     }
 
     public void Log(string message)
@@ -209,62 +218,92 @@ public class RoadGenerator : MonoBehaviour
         }
     }
 
-    public void FlattenMesh()
+    /*
+    //Spawning the terrain loaders and then waiting for them to be completed
+    public void SpawnTerrainLoaders()
     {
-        Debug.Log("FlattenMesh()");
         foreach (City city in cities)
         {
-            RaycastHit hit;
-            Debug.Log(string.Format("Checking ground for {0} at location {1}", city.name, city.position));
-            if (Physics.Raycast(city.position + new Vector3(0,99,0), -Vector3.up, out hit))
+            GameObject lastTerrainLoader = Instantiate(terrainLoader, city.position, Quaternion.Euler(0, 0, 0));
+            lastTerrainLoader.name = city.name + " Terrain Loader";
+        }
+        //FindObjectOfType<EndlessTerrain>().StartTerrainGeneration();
+    }
+    //Once the terrain loaders have generated the mesh, then we start flattening it for the roads
+    public void FlattenMesh()
+    {
+        if (loading.totalLoaderChunkActions == loading.numberOfChunkActionsCompleted && !meshFlattened)
+        {
+            meshFlattened = true;
+            Debug.Log("Flattening Mesh");
+            //Done loading the chunks for cities
+            foreach (City city in cities)
             {
-                if (hit.transform.CompareTag("Terrain"))
+                RaycastHit hit;
+                //Debug.Log(string.Format("Checking ground for {0} at location {1}", city.name, city.position));
+                if (Physics.Raycast(city.position + new Vector3(0,99,0), -Vector3.up, out hit))
                 {
-                    MeshCollider meshCollider = hit.collider as MeshCollider;
-                    Mesh mesh = meshCollider.sharedMesh;
-                    Vector3[] vertices = mesh.vertices;
-                    int[] triangles = mesh.triangles;
-                    Vector3 p0 = vertices[triangles[hit.triangleIndex * 3 + 0]];
-                    Vector3 p1 = vertices[triangles[hit.triangleIndex * 3 + 1]];
-                    Vector3 p2 = vertices[triangles[hit.triangleIndex * 3 + 2]];
-                    Transform hitTransform = hit.collider.transform;
-                    p0 = hitTransform.TransformPoint(p0);
-                    p1 = hitTransform.TransformPoint(p1);
-                    p2 = hitTransform.TransformPoint(p2);
-                    GameObject a = new GameObject(city.name + " a");
-                    GameObject b = new GameObject(city.name + " b");
-                    GameObject c = new GameObject(city.name + " c");
-                    a.transform.position = p0;
-                    b.transform.position = p1;
-                    c.transform.position = p2;
-                    
-                    Debug.Log(string.Format("We have found and spawned the gameobjects at {0}", hit.transform.position));
+                    if (hit.transform.CompareTag("Terrain"))
+                    {
+                        MeshCollider meshCollider = hit.collider as MeshCollider;
+                        Mesh mesh = meshCollider.sharedMesh;
+                        Vector3[] vertices = mesh.vertices;
+                        int[] triangles = mesh.triangles;
+                        Vector3 p0 = vertices[triangles[hit.triangleIndex * 3 + 0]];
+                        //We have got that height stored at the center of the town
+                        float yHeight = vertices[triangles[hit.triangleIndex * 3 + 0]].y;
+                        int centerVertice = triangles[hit.triangleIndex * 3 + 0];
+                        //Now we need to apply it to the mesh 20 in each direction
+                        try
+                        {
+                            //20 is the half the distance in vertices we need to go
+                            int meshsize = 565;
+                            int amountToTravel = 6;
+                            for (int y = -amountToTravel; y <= amountToTravel; y++)
+                            {
+                                for (int xIndex = -amountToTravel; xIndex <= amountToTravel; xIndex++)
+                                {
+                                    
+                                    vertices[centerVertice + 2 +(meshsize * y) + xIndex].y = yHeight; //1
+                                    vertices[centerVertice + (meshsize * y) + xIndex].y = yHeight; //2
+                                    vertices[centerVertice + 1 + (meshsize * y) + xIndex].y = yHeight; //3
+                                    vertices[centerVertice + 3 +(meshsize * y) + xIndex].y = yHeight; //4
+                                    vertices[centerVertice + 5 + 1 + (meshsize * y) + xIndex].y = yHeight; //5
+                                    vertices[centerVertice + 4 + (meshsize * y) + xIndex].y = yHeight; //6
+                                    
+                                    vertices[centerVertice + (6 * xIndex) + (meshsize * y)].y = yHeight; //2
+                                    vertices[centerVertice + 1 + (6 * xIndex) + (meshsize * y)].y = yHeight; //3
+                                    vertices[centerVertice + 2 + (6 * xIndex) + (meshsize * y)].y = yHeight; //1
+                                    vertices[centerVertice + 3 + (6 * xIndex) + (meshsize * y)].y = yHeight; //4
+                                    vertices[centerVertice + 4 + (6 * xIndex) + (meshsize * y)].y = yHeight; //6
+                                    vertices[centerVertice + 5 + (6 * xIndex) + (meshsize * y)].y = yHeight; //5
+
+                                }
+                            }
+                            
+
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                        mesh.vertices = vertices;
+                        GameObject a = new GameObject(city.name);
+                        a.transform.position = p0;
+                    }
+                    else
+                    {
+                        Debug.Log(string.Format("We hit something else called {0}", hit.transform.name));
+                    }
                 }
                 else
                 {
-                    Debug.Log(string.Format("We hit something else called {0}", hit.transform.name));
+                
                 }
             }
-            else
-            {
-                
-            }
         }
     }
-    
-    private bool _busy = false;
-    public void TimeCheck(Action callback)
-    {
-        if (!_busy)
-        {            
-            _busy = true;
-            DateTime before = DateTime.Now;
-            callback.Invoke();
-            DateTime after = DateTime.Now;
-            TimeSpan duration = after.Subtract(before);
-            Debug.Log(string.Format("The action took {1} milliseconds", duration.TotalMilliseconds));
-            _busy = false;
-        }
-    }
-    
+                            */
 }

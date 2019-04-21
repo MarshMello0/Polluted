@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class Loading : MonoBehaviour
 {
     //This is the total number of things needed to be completed before the player can play
-    private int totalNumberOfActions = 0;
+    public int totalNumberOfActions = 0;
     //This is the current number of actions done by the clients machine
     public int numberOfActionsCompleted = 0;
     private DateTime startTime;
@@ -17,6 +18,11 @@ public class Loading : MonoBehaviour
         startTime = DateTime.Now;
         CalActions();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
+    }
+
+    private void Start()
+    {
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Game"));
     }
 
     private void CalActions()
@@ -46,6 +52,7 @@ public class Loading : MonoBehaviour
             DateTime finished = DateTime.Now;
             TimeSpan duration = finished.Subtract(startTime);
             CustomDebug.Log(CustomDebug.Type.Log, string.Format("Finished loading in {0} milliseconds", duration.TotalMilliseconds));
+            
             SceneManager.UnloadSceneAsync(1);
         }
     }

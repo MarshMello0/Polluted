@@ -58,8 +58,9 @@ public class MapGenerator : MonoBehaviour {
 		}
 	}
 
-	public void DrawMapInEditor() {
-		MapData mapData = GenerateMapData (Vector2.zero);
+	public void DrawMapInEditor() 
+	{
+		MapData mapData = GenerateMapData (Vector2.zero, new List<City>());
 
 		MapDisplay display = FindObjectOfType<MapDisplay> ();
 		if (drawMode == DrawMode.NoiseMap) {
@@ -73,17 +74,20 @@ public class MapGenerator : MonoBehaviour {
 		}
 	}
 
-	public void RequestMapData(Vector2 centre, Action<MapData> callback) {
+	public void RequestMapData(Vector2 centre, List<City> cities, Action<MapData> callback) 
+	{
 		ThreadStart threadStart = delegate {
-			MapDataThread (centre, callback);
+			MapDataThread (centre, cities, callback);
 		};
 
 		new Thread (threadStart).Start ();
 	}
 
-	void MapDataThread(Vector2 centre, Action<MapData> callback) {
-		MapData mapData = GenerateMapData (centre);
-		lock (mapDataThreadInfoQueue) {
+	void MapDataThread(Vector2 centre, List<City> cities, Action<MapData> callback) 
+	{
+		MapData mapData = GenerateMapData (centre, cities);
+		lock (mapDataThreadInfoQueue) 
+		{
 			mapDataThreadInfoQueue.Enqueue (new MapThreadInfo<MapData> (callback, mapData));
 		}
 	}
@@ -104,14 +108,16 @@ public class MapGenerator : MonoBehaviour {
 	}
 
 	void Update() {
-		if (mapDataThreadInfoQueue.Count > 0) {
+		if (mapDataThreadInfoQueue.Count > 0) 
+		{
 			for (int i = 0; i < mapDataThreadInfoQueue.Count; i++) {
 				MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue ();
 				threadInfo.callback (threadInfo.parameter);
 			}
 		}
 
-		if (meshDataThreadInfoQueue.Count > 0) {
+		if (meshDataThreadInfoQueue.Count > 0) 
+		{
 			for (int i = 0; i < meshDataThreadInfoQueue.Count; i++) {
 				MapThreadInfo<MeshData> threadInfo = meshDataThreadInfoQueue.Dequeue ();
 				threadInfo.callback (threadInfo.parameter);
@@ -119,8 +125,9 @@ public class MapGenerator : MonoBehaviour {
 		}
 	}
 
-	MapData GenerateMapData(Vector2 centre) {
-		float[,] noiseMap = Noise.GenerateNoiseMap (mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+	MapData GenerateMapData(Vector2 centre, List<City> cities) 
+	{
+		float[,] noiseMap = Noise.GenerateNoiseMap (mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode, cities);
 
 		Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
 		for (int y = 0; y < mapChunkSize; y++) {

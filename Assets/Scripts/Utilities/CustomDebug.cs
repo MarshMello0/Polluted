@@ -28,4 +28,12 @@ public static class CustomDebug
         finalMessage += " </color>";
         Debug.Log(finalMessage);
     }
+
+    public static void LogColour(Color colour, string message)
+    {
+        string finalMessage = "<color=#" + ColorUtility.ToHtmlStringRGB(colour) + ">";
+        finalMessage += message + "</color>";
+        
+        Debug.Log(finalMessage);
+    }
 }

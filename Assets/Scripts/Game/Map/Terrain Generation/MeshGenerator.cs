@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class MeshGenerator {
+public static class MeshGenerator 
+{
 
-	public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve _heightCurve, int levelOfDetail, bool useFlatShading) {
+	public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve _heightCurve, int levelOfDetail, bool useFlatShading) 
+	{
 		AnimationCurve heightCurve = new AnimationCurve (_heightCurve.keys);
 
 		int meshSimplificationIncrement = (levelOfDetail == 0)?1:levelOfDetail * 2;
@@ -24,8 +26,10 @@ public static class MeshGenerator {
 		int meshVertexIndex = 0;
 		int borderVertexIndex = -1;
 
-		for (int y = 0; y < borderedSize; y += meshSimplificationIncrement) {
-			for (int x = 0; x < borderedSize; x += meshSimplificationIncrement) {
+		for (int y = 0; y < borderedSize; y += meshSimplificationIncrement) 
+		{
+			for (int x = 0; x < borderedSize; x += meshSimplificationIncrement) 
+			{
 				bool isBorderVertex = y == 0 || y == borderedSize - 1 || x == 0 || x == borderedSize - 1;
 
 				if (isBorderVertex) {
@@ -67,7 +71,8 @@ public static class MeshGenerator {
 	}
 }
 
-public class MeshData {
+public class MeshData 
+{
 	Vector3[] vertices;
 	int[] triangles;
 	Vector2[] uvs;
@@ -115,7 +120,8 @@ public class MeshData {
 		}
 	}
 
-	Vector3[] CalculateNormals() {
+	Vector3[] CalculateNormals() 
+	{
 
 		Vector3[] vertexNormals = new Vector3[vertices.Length];
 		int triangleCount = triangles.Length / 3;
