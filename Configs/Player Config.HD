@@ -1,0 +1,9 @@
+bind W forward 
+bind S back 
+bind A left 
+bind D right 
+bind Space jump 
+bind LeftShift sprint 
+bind Tab inventory 
+bind P pause 
+setting i_viewdistance 2 

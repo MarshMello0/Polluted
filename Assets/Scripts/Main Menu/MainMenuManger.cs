@@ -12,11 +12,6 @@ public class MainMenuManger : MonoBehaviour
     [SerializeField]
     private List<GameObject> panelsList;
 
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
         panels = new Dictionary<string, GameObject>();

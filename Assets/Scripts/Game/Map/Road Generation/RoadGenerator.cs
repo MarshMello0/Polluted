@@ -9,6 +9,9 @@ public class RoadGenerator : MonoBehaviour
 {
     [SerializeField] private bool createDebugLines;
     [SerializeField] private GameObject roadDebugLine;
+    [SerializeField] private bool createDebugSquares;
+    [SerializeField] private bool createRoads;
+    [SerializeField] private GameObject roadTypeSquare;
     private List<RoadThread> threads = new List<RoadThread>();
 
     private Random rnd;
@@ -18,9 +21,11 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] private int cityDistance = 200;
 
     [SerializeField] private int spawnSize = 1000;
+    public static int cityScale = 23;
     private int minAmount = 0;
-    [Header("Prefabs")] 
-    [SerializeField] private GameObject terrainLoader;
+    [Header("M Prefabs")] [SerializeField] private GameObject[] mRoadsPrefabs;
+    [Header("A Prefabs")] [SerializeField] private GameObject[] aRoadsPrefabs;
+    [Header("S Prefabs")] [SerializeField] private GameObject[] sRoadsPrefabs;
     [Header("Cities")]
     //Cities
     public List<City> cities = new List<City>();
@@ -34,6 +39,7 @@ public class RoadGenerator : MonoBehaviour
         loading = FindObjectOfType<Loading>();
         rnd = new Random(FindObjectOfType<GameInfo>().seed);
         minAmount = Mathf.FloorToInt(Mathf.RoundToInt((spawnSize * 94) * 2.5f) / (cityDistance * 2f));
+        minAmount = 1;
         for (int i = 0; i < minAmount; i++)
         {
             Generator();
@@ -56,7 +62,9 @@ public class RoadGenerator : MonoBehaviour
         x = Mathf.RoundToInt(x * 2.5f);
         z *= 94;
         z = Mathf.RoundToInt(z * 2.5f);
-        Vector3 position = new Vector3(x - 50,0,z - 50);
+        z -= 50;
+        x -= 50;
+        Vector3 position = new Vector3(x ,0,z);
 
         for (int j = 0; j < cities.Count; j++)
         {
@@ -88,15 +96,22 @@ public class RoadGenerator : MonoBehaviour
         RoadThread roadThread = threads[threads.Count - 1];
         //This will wait for that thread to be complete
         yield return StartCoroutine(roadThread.WaitFor());
-
         string cityName = Cities.GetRandomName();
+        
+        GameObject parent = new GameObject(cityName);
+        parent.transform.position = roadThread.position;
+
+        float scaleBackX = roadThread.position.x * (cityScale - 1);
+        float scaleBackZ = roadThread.position.z * (cityScale - 1);
+        
+        GeneratedSlot[,] generatedSlots = roadThread.citySlots;
         if (createDebugLines)
         {
-            GameObject parent = new GameObject(cityName);
-            parent.transform.position = roadThread.position;
+            GameObject lineParent = new GameObject("Debug Lines");
+            lineParent.transform.SetParent(parent.transform);
             for (int i = 0; i < roadThread.roads.Count; i++)
             {
-                GameObject last = Instantiate(roadDebugLine, parent.transform);
+                GameObject last = Instantiate(roadDebugLine, lineParent.transform);
                 last.name = string.Format("{0}{1} Road", roadThread.roads[i].roadType.ToString(), i);
                 LineRenderer lineRenderer = last.GetComponent<LineRenderer>();
                 lineRenderer.positionCount = roadThread.roads[i].points.Length;
@@ -104,7 +119,11 @@ public class RoadGenerator : MonoBehaviour
                 for (int j = 0; j < lineRenderer.positionCount; j++)
                 {
                     //This adds the offset for each point
-                    lineRenderer.SetPosition(j, roadThread.roads[i].points[j] + roadThread.position);
+                    Vector3 position = new Vector3(
+                        ((roadThread.roads[i].points[j].x + roadThread.position.x) * cityScale) - scaleBackX,
+                        ((roadThread.roads[i].points[j].y + roadThread.position.y) * cityScale),
+                        ((roadThread.roads[i].points[j].z + roadThread.position.z) * cityScale) - scaleBackZ);
+                    lineRenderer.SetPosition(j, position);
                 }
 
                 if (roadThread.roads[i].roadType == RoadType.M)
@@ -116,6 +135,111 @@ public class RoadGenerator : MonoBehaviour
                 {
                     lineRenderer.startColor = Color.green;
                     lineRenderer.endColor = Color.green;
+                }
+            }
+        }
+        if (createDebugSquares)
+        {
+            GameObject squareParent = new GameObject("Debug Squares");
+            squareParent.transform.SetParent(parent.transform);
+            for (int x = 0; x < generatedSlots.GetLength(0); x++)
+            {
+                for (int y = 0; y < generatedSlots.GetLength(1); y++)
+                {
+                    Vector3 position = new Vector3(
+                        ((x + roadThread.position.x) * cityScale) - scaleBackX,
+                        (1 + roadThread.position.y) * cityScale + 2,
+                        ((y + roadThread.position.z) * cityScale) - scaleBackZ);
+                    //Spawning a debug square
+                    GameObject square = Instantiate(roadTypeSquare, position, Quaternion.Euler(0,0,0), squareParent.transform);
+                    Material m = square.GetComponent<MeshRenderer>().material;
+                    if (generatedSlots[x, y] is RoadSlot)
+                    {
+                        //checking what type of road it is
+                        RoadSlot slot = (RoadSlot) generatedSlots[x, y];
+                        if (slot.type == RoadSlot.Type.S)
+                        {
+                            m.SetColor("_BaseColor", Color.white);
+                            //if there is no connections
+                            if (!slot.hasConnection)
+                            {
+                                //GameObject sroad = Instantiate(sRoadsPrefabs[0],position, Quaternion.Euler(0,slot.primaryDirection,0), parent.transform);   
+                            }
+                        }
+                        else if (slot.type == RoadSlot.Type.A)
+                        {
+                            m.SetColor("_BaseColor", Color.green);
+                        }
+                        else
+                        {
+                            m.SetColor("_BaseColor", Color.blue);
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    else
+                    {
+                        m.SetColor("_BaseColor", Color.black);
+                        //Debug.Log(generatedSlots[x,y].GetType() + " X " + x + " Y " + y);
+                    }
+                }
+            }
+        }
+
+        if (createRoads)
+        {
+            GameObject roadsParent = new GameObject("Roads Prefabs");
+            roadsParent.transform.SetParent(parent.transform);
+            for (int x = 0; x < generatedSlots.GetLength(0); x++)
+            {
+                for (int y = 0; y < generatedSlots.GetLength(1); y++)
+                {
+                    Vector3 position = new Vector3(
+                        ((x + roadThread.position.x) * cityScale) - scaleBackX,
+                        (1 + roadThread.position.y) * cityScale + 2,
+                        ((y + roadThread.position.z) * cityScale) - scaleBackZ);
+
+                    if (generatedSlots[x, y] is RoadSlot)
+                    {
+                        //checking what type of road it is
+                        RoadSlot slot = (RoadSlot) generatedSlots[x, y];
+                        if (slot.type == RoadSlot.Type.S)
+                        {
+                            //if there is no connections
+                            if (!slot.hasConnection)
+                            {
+                                GameObject sroad = Instantiate(sRoadsPrefabs[0], position,
+                                    Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                            }
+                        }
+                        else if (slot.type == RoadSlot.Type.A)
+                        {
+                            if (!slot.hasConnection)
+                            {
+                                GameObject aRoad = Instantiate(aRoadsPrefabs[0], position,
+                                    Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                            }
+                            else if (slot.connectedType.Count == 1)
+                            {
+                                position += new Vector3(0,0.001f,0);
+                                //This means there should only be 1 other road connecting to it
+                                if (slot.connectedType[0] == RoadSlot.Type.M)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    //It must be a small road as A roads don't need to connect to each other
+                                    GameObject aRoad = Instantiate(aRoadsPrefabs[1], position,
+                                        Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
                 }
             }
         }
@@ -217,93 +341,4 @@ public class RoadGenerator : MonoBehaviour
             lineRenderer.endColor = Color.green;
         }
     }
-
-    /*
-    //Spawning the terrain loaders and then waiting for them to be completed
-    public void SpawnTerrainLoaders()
-    {
-        foreach (City city in cities)
-        {
-            GameObject lastTerrainLoader = Instantiate(terrainLoader, city.position, Quaternion.Euler(0, 0, 0));
-            lastTerrainLoader.name = city.name + " Terrain Loader";
-        }
-        //FindObjectOfType<EndlessTerrain>().StartTerrainGeneration();
-    }
-    //Once the terrain loaders have generated the mesh, then we start flattening it for the roads
-    public void FlattenMesh()
-    {
-        if (loading.totalLoaderChunkActions == loading.numberOfChunkActionsCompleted && !meshFlattened)
-        {
-            meshFlattened = true;
-            Debug.Log("Flattening Mesh");
-            //Done loading the chunks for cities
-            foreach (City city in cities)
-            {
-                RaycastHit hit;
-                //Debug.Log(string.Format("Checking ground for {0} at location {1}", city.name, city.position));
-                if (Physics.Raycast(city.position + new Vector3(0,99,0), -Vector3.up, out hit))
-                {
-                    if (hit.transform.CompareTag("Terrain"))
-                    {
-                        MeshCollider meshCollider = hit.collider as MeshCollider;
-                        Mesh mesh = meshCollider.sharedMesh;
-                        Vector3[] vertices = mesh.vertices;
-                        int[] triangles = mesh.triangles;
-                        Vector3 p0 = vertices[triangles[hit.triangleIndex * 3 + 0]];
-                        //We have got that height stored at the center of the town
-                        float yHeight = vertices[triangles[hit.triangleIndex * 3 + 0]].y;
-                        int centerVertice = triangles[hit.triangleIndex * 3 + 0];
-                        //Now we need to apply it to the mesh 20 in each direction
-                        try
-                        {
-                            //20 is the half the distance in vertices we need to go
-                            int meshsize = 565;
-                            int amountToTravel = 6;
-                            for (int y = -amountToTravel; y <= amountToTravel; y++)
-                            {
-                                for (int xIndex = -amountToTravel; xIndex <= amountToTravel; xIndex++)
-                                {
-                                    
-                                    vertices[centerVertice + 2 +(meshsize * y) + xIndex].y = yHeight; //1
-                                    vertices[centerVertice + (meshsize * y) + xIndex].y = yHeight; //2
-                                    vertices[centerVertice + 1 + (meshsize * y) + xIndex].y = yHeight; //3
-                                    vertices[centerVertice + 3 +(meshsize * y) + xIndex].y = yHeight; //4
-                                    vertices[centerVertice + 5 + 1 + (meshsize * y) + xIndex].y = yHeight; //5
-                                    vertices[centerVertice + 4 + (meshsize * y) + xIndex].y = yHeight; //6
-                                    
-                                    vertices[centerVertice + (6 * xIndex) + (meshsize * y)].y = yHeight; //2
-                                    vertices[centerVertice + 1 + (6 * xIndex) + (meshsize * y)].y = yHeight; //3
-                                    vertices[centerVertice + 2 + (6 * xIndex) + (meshsize * y)].y = yHeight; //1
-                                    vertices[centerVertice + 3 + (6 * xIndex) + (meshsize * y)].y = yHeight; //4
-                                    vertices[centerVertice + 4 + (6 * xIndex) + (meshsize * y)].y = yHeight; //6
-                                    vertices[centerVertice + 5 + (6 * xIndex) + (meshsize * y)].y = yHeight; //5
-
-                                }
-                            }
-                            
-
-
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                            throw;
-                        }
-                        mesh.vertices = vertices;
-                        GameObject a = new GameObject(city.name);
-                        a.transform.position = p0;
-                    }
-                    else
-                    {
-                        Debug.Log(string.Format("We hit something else called {0}", hit.transform.name));
-                    }
-                }
-                else
-                {
-                
-                }
-            }
-        }
-    }
-                            */
 }

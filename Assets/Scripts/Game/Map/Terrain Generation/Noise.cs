@@ -99,12 +99,14 @@ public static class Noise
 		{
 //			CustomDebug.LogColour(Color.grey, string.Format("{0} X:{1} Y:{2} World X:{3} Y:{4}",
 //				city.name, city.position.x, city.position.z, worldPosition.x - 50, worldPosition.z - 50));
+
+
 			//Finds if there is a city inside of the float array we are generating
-			if (city.position.x == worldPosition.x - 50 &&
-			    city.position.z == worldPosition.z - 50)
+			//If the chunk is within a distance of the city
+			if (Vector3.Distance((city.position + (new Vector3(50, 0, 50) * RoadGenerator.cityScale)), worldPosition) < 1000)
 			{
 				cityInChunk = city;
-				CustomDebug.LogColour(Color.yellow, string.Format("{0} will changed a chunk at {1}", city.name, worldPosition));
+				//CustomDebug.LogColour(Color.yellow, string.Format("{0} will changed a chunk at {1}", city.name, worldPosition));
 				break;
 			}
 		}
@@ -115,20 +117,7 @@ public static class Noise
 			float cityStartZ = 0;
 			int amountX = 97;
 			int amountZ = 97;
-			/*
-			if (cityInChunk.position.x > worldPosition.x - 97)
-			{
-				//This must mean you are inside of the chunk on the x axis
-				cityStartX = cityInChunk.position.x - worldPosition.x;
-				amountX -= Mathf.RoundToInt(cityStartX);
-			}
-			if (cityInChunk.position.z > worldPosition.z - 97)
-			{
-				//This must mean you are inside of the chunk on the z axis
-				cityStartZ = cityInChunk.position.z - worldPosition.z;
-				amountZ -= Mathf.RoundToInt(cityStartZ);
-			}*/
-			
+
 			CustomDebug.LogColour(Color.green, string.Format("CityStart X:{0} Z:{1}  Amount X:{2} Z:{3} City Position X:{4} Z:{5} Chunk Position X:{6} Z:{7} NoiseMap Length {8}",
 				cityStartX,cityStartZ,amountX,amountZ, cityInChunk.position.x, cityInChunk.position.z, worldPosition.x, worldPosition.z, noiseMap.GetLength(0)));
 
@@ -136,6 +125,8 @@ public static class Noise
 			{
 				for (int zIndex = 0; zIndex < amountZ; zIndex++)
 				{
+					//This is where we set the height of the mesh for the city
+					//Later this needs to find the average instead of just being at 50% of the max height
 					noiseMap[xIndex + Mathf.RoundToInt(cityStartX),zIndex + Mathf.RoundToInt(cityStartZ)] = 1;
 				}
 			}
