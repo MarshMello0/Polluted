@@ -210,6 +210,29 @@ public class RoadGenerator : MonoBehaviour
                                 GameObject sroad = Instantiate(sRoadsPrefabs[0], position,
                                     Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
                             }
+                            else if (slot.connectedType.Count == 1)
+                            {
+                                if (slot.connectedType[0] == RoadSlot.Type.M)
+                                {
+                                    
+                                }
+                                else if (slot.connectedType[0] == RoadSlot.Type.S)
+                                {
+                                    GameObject sRoad = Instantiate(sRoadsPrefabs[1], position,
+                                        Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                                }
+                            }
+                            else if (slot.connectedType.Count == 2)
+                            {
+                                //This should be the max possiable connections for a road,
+                                //but still doing an else if just in case not
+                                if (slot.connectedType[0] == RoadSlot.Type.S &&
+                                    slot.connectedType[1] == RoadSlot.Type.S)
+                                {
+                                    GameObject sRoad = Instantiate(sRoadsPrefabs[2], position,
+                                        Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                                }
+                            }
                         }
                         else if (slot.type == RoadSlot.Type.A)
                         {
@@ -233,10 +256,30 @@ public class RoadGenerator : MonoBehaviour
                                         Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
                                 }
                             }
+                            else if (slot.connectedType.Count == 2)
+                            {
+                                position += new Vector3(0,0.002f,0);
+                                if (slot.connectedType[0] == RoadSlot.Type.S &&
+                                    slot.connectedType[1] == RoadSlot.Type.S)
+                                {
+                                    GameObject aRoad = Instantiate(aRoadsPrefabs[2], position,
+                                        Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                                }
+                            }
                         }
-                        else
+                        else if (slot.type == RoadSlot.Type.M)
                         {
-
+                            if (!slot.hasConnection)
+                            {
+                                GameObject mRoad = Instantiate(mRoadsPrefabs[0], position,
+                                    Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                            }
+                            else if (slot.connectedType.Count == 2)
+                            {
+                                position += new Vector3(0,0.003f,0);
+                                GameObject mRoad = Instantiate(mRoadsPrefabs[1], position,
+                                    Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
+                            }
                         }
                         yield return new WaitForEndOfFrame();
                     }

@@ -63,7 +63,7 @@ public class RoadThread : ThreadedJob
         //This for loop will go from top to bottom along the one x axis to create the motorway
         for (int i = 1; i < citySize; i++)
         {
-            citySlots[motorwayStartX,i] = new RoadSlot(motorwayStartX,i - 1, RoadSlot.Type.M, RoadSlot.Type.M,0);
+            citySlots[motorwayStartX,i] = new RoadSlot(RoadSlot.Type.M,0);
             points[i] = new Vector3(motorwayStartX,0, i);
         }
         
@@ -146,14 +146,14 @@ public class RoadThread : ThreadedJob
         //These two roads are the roads we are going to be finding the random points off of
         Road leftStraightRoad = a1;
         Road rightStraightRoad = a4;
-        int amountOfSideRoads = 2; //This number will be used to how many random points we find
+        int amountOfSideRoads = 4; //This number will be used to how many random points we find
         
         
 
         for (int i = 0; i < (citySize / 2) - 2; i += 2)
         {
-            Vector3[] leftRoadPoints = new Vector3[motorwayStartX - 1];
-            Vector3[] rightRoadPoints = new Vector3[citySize - motorwayStartX - 1];
+            Vector3[] leftRoadPoints = new Vector3[motorwayStartX - 2];
+            Vector3[] rightRoadPoints = new Vector3[citySize - motorwayStartX - 2];
             
             Vector2[] leftRandomPoints = new Vector2[amountOfSideRoads];
             Vector2[] rightRandomPoints = new Vector2[amountOfSideRoads];
@@ -162,11 +162,11 @@ public class RoadThread : ThreadedJob
             for (int j = 0; j < amountOfSideRoads; j++)
             {
                 //This will give a random point of the points list to pick from
-                int leftPoint = rnd.Next(leftStraightRoad.points.Length);
-                int rightPoint = rnd.Next(rightStraightRoad.points.Length);
+                int leftPoint = rnd.Next(leftStraightRoad.points.Length - 1);
+                int rightPoint = rnd.Next(rightStraightRoad.points.Length - 1);
 
-                Vector2 leftVector2 = leftStraightRoad.points[leftPoint];
-                Vector2 rightVector2 = rightStraightRoad.points[rightPoint];
+                Vector2 leftVector2 = leftStraightRoad.points[leftPoint + 1];
+                Vector2 rightVector2 = rightStraightRoad.points[rightPoint + 1];
 
                 leftRandomPoints[j] = leftVector2;
                 rightRandomPoints[j] = rightVector2;
@@ -174,9 +174,9 @@ public class RoadThread : ThreadedJob
             
             
             //Loop for the whole length that the road needs to be
-            for (int j = 0; j < citySize - motorwayStartX - 1; j++)
+            for (int j = 0; j < citySize - motorwayStartX - 2; j++)
             {
-                int x = motorwayStartX + j + 1;
+                int x = motorwayStartX + j + 2;
                 int y = i + 2;
                 
                 RoadSlot rightSlot = new RoadSlot(RoadSlot.Type.S,90);
@@ -199,6 +199,14 @@ public class RoadThread : ThreadedJob
                         smallRoadPoints[2] = new Vector3(x,0,i);
                         roads.Add(new Road(smallRoadPoints, RoadType.S));
                         
+                        //Rotating the bottom S road 
+                        if (citySlots[x, i] is RoadSlot)
+                        {
+                            if (((RoadSlot) citySlots[x, i]).type == RoadSlot.Type.S)
+                            {
+                                ((RoadSlot) citySlots[x, i]).primaryDirection += 180;
+                            }
+                        }
                         break;
                     }
                 }
@@ -206,9 +214,9 @@ public class RoadThread : ThreadedJob
                 citySlots[x, y] = rightSlot;
             }
 
-            for (int j = 0; j < motorwayStartX - 1; j++)
+            for (int j = 0; j < motorwayStartX - 2; j++)
             {
-                int x = motorwayStartX - j - 1;
+                int x = motorwayStartX - j - 2;
                 int y = i + 2;
                 
                 RoadSlot leftSlot = new RoadSlot(RoadSlot.Type.S,90);
@@ -230,6 +238,15 @@ public class RoadThread : ThreadedJob
                         smallRoadPoints[1] = new Vector3(x,0,y - 1);
                         smallRoadPoints[2] = new Vector3(x,0,i);
                         roads.Add(new Road(smallRoadPoints, RoadType.S));
+                        
+                        //Rotating the bottom S road 
+                        if (citySlots[x, i] is RoadSlot)
+                        {
+                            if (((RoadSlot) citySlots[x, i]).type == RoadSlot.Type.S)
+                            {
+                                ((RoadSlot) citySlots[x, i]).primaryDirection += 180;
+                            }
+                        }
                         break;
                     }
                 }
@@ -254,8 +271,8 @@ public class RoadThread : ThreadedJob
         
         for (int i = 0; i < amountOfSideRoads; i++)
         {
-            Vector3[] leftPoints = new Vector3[2];
-            Vector3[] rightPoints = new Vector3[2];
+            Vector3[] leftPoints = new Vector3[3];
+            Vector3[] rightPoints = new Vector3[3];
             
             //This will give a random point of the points list to pick from
             int leftPoint = rnd.Next(leftStraightRoad.points.Length);
@@ -263,21 +280,32 @@ public class RoadThread : ThreadedJob
             
             leftPoints[0] = new Vector3(leftStraightRoad.points[leftPoint].x,0,(citySize / 2) - 2);
             leftPoints[1] = new Vector3(leftStraightRoad.points[leftPoint].x,0,(citySize / 2));
+            leftPoints[2] = new Vector3(leftStraightRoad.points[leftPoint].x,0,(citySize / 2));
             
             rightPoints[0] = new Vector3(rightStraightRoad.points[rightPoint].x,0,(citySize / 2) - 2);
-            rightPoints[1] = new Vector3(rightStraightRoad.points[rightPoint].x,0,(citySize / 2));
+            rightPoints[1] = new Vector3(rightStraightRoad.points[rightPoint].x,0,(citySize / 2) - 1);
+            rightPoints[2] = new Vector3(rightStraightRoad.points[rightPoint].x,0,(citySize / 2));
             
             //These float should already be a whole number anyways
             int rightX = Mathf.RoundToInt(rightPoints[0].x); 
             int leftX = Mathf.RoundToInt(leftPoints[0].x);
-            int y = Mathf.RoundToInt(leftStraightRoad.points[0].z - 2);
+            int y = Mathf.RoundToInt(leftStraightRoad.points[0].z);
             
             //Adding it to the slot array
-            CheckSlotForRoad(rightX,y,rightX,y + 2, RoadSlot.Type.S, RoadSlot.Type.S,0);
-            CheckSlotForRoad(rightX,y + 2,rightX,y, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            CheckSlotForRoad(rightX,y,rightX,y + 1, RoadSlot.Type.S, RoadSlot.Type.S,180);
+            CheckSlotForRoad(rightX,y + 1,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            CheckSlotForRoad(rightX,y + 2,rightX,y + 1, RoadSlot.Type.S, RoadSlot.Type.S,180);
             
-            CheckSlotForRoad(leftX,y,leftX,y + 2, RoadSlot.Type.S, RoadSlot.Type.S,0);
-            CheckSlotForRoad(leftX,y + 2,leftX,y, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            CheckSlotForRoad(leftX,y,leftX,y + 1, RoadSlot.Type.S, RoadSlot.Type.S,180);
+            CheckSlotForRoad(leftX,y + 1,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            CheckSlotForRoad(leftX,y + 2,leftX,y +1, RoadSlot.Type.S, RoadSlot.Type.S,180);
+            
+            //Having to do some manual correction as CheckSlotsForRoad has a flaw
+            ((RoadSlot) citySlots[leftX, y]).primaryDirection = 270;
+            ((RoadSlot) citySlots[leftX, y + 2]).primaryDirection = 270;
+            
+            ((RoadSlot) citySlots[rightX, y]).primaryDirection = 270;
+            ((RoadSlot) citySlots[rightX, y + 2]).primaryDirection = 270;
             
             Road leftSmallRoad = new Road(leftPoints,RoadType.S);
             Road rightSmallRoad = new Road(rightPoints, RoadType.S);
