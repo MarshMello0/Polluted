@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-public class EndlessTerrain : MonoBehaviour {
+public class EndlessTerrain : MonoBehaviour 
+{
 
 	const float scale = 2.5f;
 
@@ -40,10 +41,9 @@ public class EndlessTerrain : MonoBehaviour {
 	{
 		isLoading = true;
 		int i_viewDistance = FileManager.GetIntValueFromConfig("i_viewdistance");
-		detailLevels = new LODInfo[3];
-		detailLevels[0] = new LODInfo(0,i_viewDistance * 100,true);
-		detailLevels[1] = new LODInfo(1,i_viewDistance * 200,false);
-		detailLevels[2] = new LODInfo(2,i_viewDistance * 300,false);
+		detailLevels = new LODInfo[2];
+		detailLevels[0] = new LODInfo(0,i_viewDistance * 25,true);
+		detailLevels[1] = new LODInfo(1,i_viewDistance * 50,false);
 		loading = FindObjectOfType<Loading>();
 	}
 

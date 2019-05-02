@@ -103,7 +103,7 @@ public static class Noise
 
 			//Finds if there is a city inside of the float array we are generating
 			//If the chunk is within a distance of the city
-			if (Vector3.Distance((city.position + (new Vector3(50, 0, 50) * RoadGenerator.cityScale)), worldPosition) < 1000)
+			if (Vector3.Distance((city.position + (new Vector3(10, 0, 10) * RoadGenerator.cityScale)), worldPosition) < 300)
 			{
 				cityInChunk = city;
 				//CustomDebug.LogColour(Color.yellow, string.Format("{0} will changed a chunk at {1}", city.name, worldPosition));
@@ -118,8 +118,8 @@ public static class Noise
 			int amountX = 97;
 			int amountZ = 97;
 
-			CustomDebug.LogColour(Color.green, string.Format("CityStart X:{0} Z:{1}  Amount X:{2} Z:{3} City Position X:{4} Z:{5} Chunk Position X:{6} Z:{7} NoiseMap Length {8}",
-				cityStartX,cityStartZ,amountX,amountZ, cityInChunk.position.x, cityInChunk.position.z, worldPosition.x, worldPosition.z, noiseMap.GetLength(0)));
+			//CustomDebug.LogColour(Color.green, string.Format("CityStart X:{0} Z:{1}  Amount X:{2} Z:{3} City Position X:{4} Z:{5} Chunk Position X:{6} Z:{7} NoiseMap Length {8}",
+			//	cityStartX,cityStartZ,amountX,amountZ, cityInChunk.position.x, cityInChunk.position.z, worldPosition.x, worldPosition.z, noiseMap.GetLength(0)));
 
 			for (int xIndex = 0; xIndex < amountX; xIndex++)
 			{

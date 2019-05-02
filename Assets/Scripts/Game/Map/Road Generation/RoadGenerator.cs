@@ -21,11 +21,19 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] private int cityDistance = 200;
 
     [SerializeField] private int spawnSize = 1000;
+    
+    //These are for generating new cities
+    [SerializeField] private float updateDistance;
+    [SerializeField] private Transform updatePoint;
+    private Vector3 lastUpdatedPosition = Vector3.zero;
+    
+    
     public static int cityScale = 23;
     private int minAmount = 0;
     [Header("M Prefabs")] [SerializeField] private GameObject[] mRoadsPrefabs;
     [Header("A Prefabs")] [SerializeField] private GameObject[] aRoadsPrefabs;
     [Header("S Prefabs")] [SerializeField] private GameObject[] sRoadsPrefabs;
+    [Header("Buildings")] [SerializeField] private GameObject[] buildingPrefabs;
     [Header("Cities")]
     //Cities
     public List<City> cities = new List<City>();
@@ -42,7 +50,7 @@ public class RoadGenerator : MonoBehaviour
         minAmount = 1;
         for (int i = 0; i < minAmount; i++)
         {
-            Generator();
+            Generator(Vector3.zero);
         }
     }
 
@@ -52,9 +60,15 @@ public class RoadGenerator : MonoBehaviour
         {
             ConnectCities();
         }
+
+        if (Vector3.Distance(lastUpdatedPosition, updatePoint.position) > updateDistance)
+        {
+            lastUpdatedPosition = updatePoint.position;
+            Generator(lastUpdatedPosition);
+        }
     }
 
-    private void Generator()
+    private void Generator(Vector3 offset, int count = 0)
     {
         int x = rnd.Next(-spawnSize,spawnSize);
         int z = rnd.Next(-spawnSize,spawnSize);
@@ -62,16 +76,23 @@ public class RoadGenerator : MonoBehaviour
         x = Mathf.RoundToInt(x * 2.5f);
         z *= 94;
         z = Mathf.RoundToInt(z * 2.5f);
-        z -= 50;
-        x -= 50;
+        z -= 100;
+        x -= 100;
         Vector3 position = new Vector3(x ,0,z);
+        position += new Vector3(offset.x, 0, offset.z);
 
         for (int j = 0; j < cities.Count; j++)
         {
             if (Vector3.Distance(cities[j].position, position) < cityDistance)
             {
                 //Too Close, Re generate
-                Generator();
+                if (count > 5)
+                {
+                    //This will only check 5 times
+                    Generator(offset, count += 1);
+                    return;
+                }
+
                 return;
             }
         }
@@ -98,7 +119,7 @@ public class RoadGenerator : MonoBehaviour
         yield return StartCoroutine(roadThread.WaitFor());
         string cityName = Cities.GetRandomName();
         
-        GameObject parent = new GameObject(cityName);
+        GameObject parent = new GameObject(cityName, typeof(DisableGO));
         parent.transform.position = roadThread.position;
 
         float scaleBackX = roadThread.position.x * (cityScale - 1);
@@ -174,17 +195,19 @@ public class RoadGenerator : MonoBehaviour
                         {
                             m.SetColor("_BaseColor", Color.blue);
                         }
-                        yield return new WaitForEndOfFrame();
+                    }
+                    else if (generatedSlots[x,y] is BuildingSlot)
+                    {
+                        m.SetColor("_BaseColor", Color.magenta);
+                        //Debug.Log(generatedSlots[x,y].GetType() + " X " + x + " Y " + y);
                     }
                     else
                     {
                         m.SetColor("_BaseColor", Color.black);
-                        //Debug.Log(generatedSlots[x,y].GetType() + " X " + x + " Y " + y);
                     }
                 }
             }
         }
-
         if (createRoads)
         {
             GameObject roadsParent = new GameObject("Roads Prefabs");
@@ -281,13 +304,23 @@ public class RoadGenerator : MonoBehaviour
                                     Quaternion.Euler(0, slot.primaryDirection, 0), roadsParent.transform);
                             }
                         }
-                        yield return new WaitForEndOfFrame();
+                    }
+                    else if (generatedSlots[x, y] is BuildingSlot)
+                    {
+                        GameObject emptySlot = Instantiate(buildingPrefabs[rnd.Next(buildingPrefabs.Length)], position,
+                            Quaternion.Euler(0, 0, 0), roadsParent.transform);
+                    }
+                    else if (generatedSlots[x,y] is EmptySlot)
+                    {
+                        GameObject emptySlot = Instantiate(buildingPrefabs[0], position,
+                            Quaternion.Euler(0, 0, 0), roadsParent.transform);
                     }
                 }
             }
         }
+        
         //Adding to the cities list for help connecting roads
-        cities.Add(new City(cityName,roadThread.citySlots,roadThread.roads, roadThread.position));
+        cities.Add(new City(cityName,roadThread.citySlots,roadThread.roads, roadThread.position)); //this is required to flatten the terrain
     }
 
     public void Log(string message)

@@ -31,7 +31,7 @@ public class Loading : MonoBehaviour
         //How many chunks will need to be loaded from view distance
         int i_viewDistance = FileManager.GetIntValueFromConfig("i_viewdistance");
         
-        float maxViewDst =  i_viewDistance * 300;
+        float maxViewDst =  i_viewDistance * 50;
         float chunkSize = 94;
         int chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize) ;
         int amountOfChunks = ((chunksVisibleInViewDst * 2) + 1) * ((chunksVisibleInViewDst * 2) + 1);

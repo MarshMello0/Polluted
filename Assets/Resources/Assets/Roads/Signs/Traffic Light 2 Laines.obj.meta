@@ -1,0 +1,324 @@
+fileFormatVersion: 2
+guid: 054f6110e4fe875498f08a0fca546709
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Amber.001_Icosphere.005_Amber.001
+    100002: Amber.002_Icosphere.008_Amber.002
+    100004: Green.001_Icosphere.004_Green.001
+    100006: Green.002_Icosphere.007_Green.002
+    100008: Holder_Pole.002_Cylinder.015_Pole.004
+    100010: Holder_Pole.003_Cylinder.016_Pole.005
+    100012: Holder_Pole.004_Cylinder.020_Pole.006
+    100014: Holder_Pole.005_Cylinder.021_Pole.007
+    100016: Light_Holder.003_Cylinder.012_Black.007
+    100018: Light_Holder.004_Cylinder.013_Black.008
+    100020: Light_Holder.005_Cylinder.014_Black.009
+    100022: Light_Holder.006_Cylinder.017_Black.010
+    100024: Light_Holder.007_Cylinder.018_Black.011
+    100026: Light_Holder.008_Cylinder.019_Black.012
+    100028: Lightbox.001_Cube.009_Black.009
+    100030: Lightbox.001_Cube.009_White.004
+    100032: Lightbox.002_Cube.010_Black.010
+    100034: Lightbox.002_Cube.010_White.005
+    100036: Red.001_Icosphere.003_Red.001
+    100038: Red.002_Icosphere.006_Red.002
+    100040: Right_Cylinder.011_Pole.005
+    100042: //RootNode
+    400000: Amber.001_Icosphere.005_Amber.001
+    400002: Amber.002_Icosphere.008_Amber.002
+    400004: Green.001_Icosphere.004_Green.001
+    400006: Green.002_Icosphere.007_Green.002
+    400008: Holder_Pole.002_Cylinder.015_Pole.004
+    400010: Holder_Pole.003_Cylinder.016_Pole.005
+    400012: Holder_Pole.004_Cylinder.020_Pole.006
+    400014: Holder_Pole.005_Cylinder.021_Pole.007
+    400016: Light_Holder.003_Cylinder.012_Black.007
+    400018: Light_Holder.004_Cylinder.013_Black.008
+    400020: Light_Holder.005_Cylinder.014_Black.009
+    400022: Light_Holder.006_Cylinder.017_Black.010
+    400024: Light_Holder.007_Cylinder.018_Black.011
+    400026: Light_Holder.008_Cylinder.019_Black.012
+    400028: Lightbox.001_Cube.009_Black.009
+    400030: Lightbox.001_Cube.009_White.004
+    400032: Lightbox.002_Cube.010_Black.010
+    400034: Lightbox.002_Cube.010_White.005
+    400036: Red.001_Icosphere.003_Red.001
+    400038: Red.002_Icosphere.006_Red.002
+    400040: Right_Cylinder.011_Pole.005
+    400042: //RootNode
+    2100000: Amber.001_Icosphere.005_Amber.001Mat
+    2100002: Amber.002_Icosphere.008_Amber.002Mat
+    2100004: Green.001_Icosphere.004_Green.001Mat
+    2100006: Green.002_Icosphere.007_Green.002Mat
+    2100008: Holder_Pole.002_Cylinder.015_Pole.004Mat
+    2100010: Holder_Pole.003_Cylinder.016_Pole.005Mat
+    2100012: Holder_Pole.004_Cylinder.020_Pole.006Mat
+    2100014: Holder_Pole.005_Cylinder.021_Pole.007Mat
+    2100016: Light_Holder.003_Cylinder.012_Black.007Mat
+    2100018: Light_Holder.004_Cylinder.013_Black.008Mat
+    2100020: Light_Holder.005_Cylinder.014_Black.009Mat
+    2100022: Light_Holder.006_Cylinder.017_Black.010Mat
+    2100024: Light_Holder.007_Cylinder.018_Black.011Mat
+    2100026: Light_Holder.008_Cylinder.019_Black.012Mat
+    2100028: Lightbox.001_Cube.009_Black.009Mat
+    2100030: Lightbox.001_Cube.009_White.004Mat
+    2100032: Lightbox.002_Cube.010_Black.010Mat
+    2100034: Lightbox.002_Cube.010_White.005Mat
+    2100036: Red.001_Icosphere.003_Red.001Mat
+    2100038: Red.002_Icosphere.006_Red.002Mat
+    2100040: Right_Cylinder.011_Pole.005Mat
+    2300000: Amber.001_Icosphere.005_Amber.001
+    2300002: Amber.002_Icosphere.008_Amber.002
+    2300004: Green.001_Icosphere.004_Green.001
+    2300006: Green.002_Icosphere.007_Green.002
+    2300008: Holder_Pole.002_Cylinder.015_Pole.004
+    2300010: Holder_Pole.003_Cylinder.016_Pole.005
+    2300012: Holder_Pole.004_Cylinder.020_Pole.006
+    2300014: Holder_Pole.005_Cylinder.021_Pole.007
+    2300016: Light_Holder.003_Cylinder.012_Black.007
+    2300018: Light_Holder.004_Cylinder.013_Black.008
+    2300020: Light_Holder.005_Cylinder.014_Black.009
+    2300022: Light_Holder.006_Cylinder.017_Black.010
+    2300024: Light_Holder.007_Cylinder.018_Black.011
+    2300026: Light_Holder.008_Cylinder.019_Black.012
+    2300028: Lightbox.001_Cube.009_Black.009
+    2300030: Lightbox.001_Cube.009_White.004
+    2300032: Lightbox.002_Cube.010_Black.010
+    2300034: Lightbox.002_Cube.010_White.005
+    2300036: Red.001_Icosphere.003_Red.001
+    2300038: Red.002_Icosphere.006_Red.002
+    2300040: Right_Cylinder.011_Pole.005
+    3300000: Amber.001_Icosphere.005_Amber.001
+    3300002: Amber.002_Icosphere.008_Amber.002
+    3300004: Green.001_Icosphere.004_Green.001
+    3300006: Green.002_Icosphere.007_Green.002
+    3300008: Holder_Pole.002_Cylinder.015_Pole.004
+    3300010: Holder_Pole.003_Cylinder.016_Pole.005
+    3300012: Holder_Pole.004_Cylinder.020_Pole.006
+    3300014: Holder_Pole.005_Cylinder.021_Pole.007
+    3300016: Light_Holder.003_Cylinder.012_Black.007
+    3300018: Light_Holder.004_Cylinder.013_Black.008
+    3300020: Light_Holder.005_Cylinder.014_Black.009
+    3300022: Light_Holder.006_Cylinder.017_Black.010
+    3300024: Light_Holder.007_Cylinder.018_Black.011
+    3300026: Light_Holder.008_Cylinder.019_Black.012
+    3300028: Lightbox.001_Cube.009_Black.009
+    3300030: Lightbox.001_Cube.009_White.004
+    3300032: Lightbox.002_Cube.010_Black.010
+    3300034: Lightbox.002_Cube.010_White.005
+    3300036: Red.001_Icosphere.003_Red.001
+    3300038: Red.002_Icosphere.006_Red.002
+    3300040: Right_Cylinder.011_Pole.005
+    4300000: Amber.001_Icosphere.005_Amber.001
+    4300002: Amber.002_Icosphere.008_Amber.002
+    4300004: Green.001_Icosphere.004_Green.001
+    4300006: Green.002_Icosphere.007_Green.002
+    4300008: Holder_Pole.002_Cylinder.015_Pole.004
+    4300010: Holder_Pole.003_Cylinder.016_Pole.005
+    4300012: Holder_Pole.004_Cylinder.020_Pole.006
+    4300014: Holder_Pole.005_Cylinder.021_Pole.007
+    4300016: Light_Holder.003_Cylinder.012_Black.007
+    4300018: Light_Holder.004_Cylinder.013_Black.008
+    4300020: Light_Holder.005_Cylinder.014_Black.009
+    4300022: Light_Holder.006_Cylinder.017_Black.010
+    4300024: Light_Holder.007_Cylinder.018_Black.011
+    4300026: Light_Holder.008_Cylinder.019_Black.012
+    4300028: Lightbox.001_Cube.009_Black.009
+    4300030: Lightbox.001_Cube.009_White.004
+    4300032: Lightbox.002_Cube.010_Black.010
+    4300034: Lightbox.002_Cube.010_White.005
+    4300036: Red.001_Icosphere.003_Red.001
+    4300038: Red.002_Icosphere.006_Red.002
+    4300040: Right_Cylinder.011_Pole.005
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amber.001_Icosphere.005_Amber.001Mat
+    second: {fileID: 2100000, guid: 097c05bbc9f7b9548853764b0f0486d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amber.002_Icosphere.008_Amber.002Mat
+    second: {fileID: 2100000, guid: 097c05bbc9f7b9548853764b0f0486d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green.001_Icosphere.004_Green.001Mat
+    second: {fileID: 2100000, guid: 973ef6defd43b0241af3d3178f3f1134, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green.002_Icosphere.007_Green.002Mat
+    second: {fileID: 2100000, guid: 973ef6defd43b0241af3d3178f3f1134, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Holder_Pole.002_Cylinder.015_Pole.004Mat
+    second: {fileID: 2100000, guid: 7797162e53e503a489483c876e8319e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Holder_Pole.003_Cylinder.016_Pole.005Mat
+    second: {fileID: 2100000, guid: 7797162e53e503a489483c876e8319e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Holder_Pole.004_Cylinder.020_Pole.006Mat
+    second: {fileID: 2100000, guid: 7797162e53e503a489483c876e8319e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Holder_Pole.005_Cylinder.021_Pole.007Mat
+    second: {fileID: 2100000, guid: 7797162e53e503a489483c876e8319e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.003_Cylinder.012_Black.007Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.004_Cylinder.013_Black.008Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.005_Cylinder.014_Black.009Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.006_Cylinder.017_Black.010Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.007_Cylinder.018_Black.011Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_Holder.008_Cylinder.019_Black.012Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lightbox.001_Cube.009_Black.009Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lightbox.001_Cube.009_White.004Mat
+    second: {fileID: 2100000, guid: c74bfebafed42c546aea5ab2a1341364, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lightbox.002_Cube.010_Black.010Mat
+    second: {fileID: 2100000, guid: c0cdc2b85cd49364fad76b1fed69a0c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lightbox.002_Cube.010_White.005Mat
+    second: {fileID: 2100000, guid: c74bfebafed42c546aea5ab2a1341364, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red.001_Icosphere.003_Red.001Mat
+    second: {fileID: 2100000, guid: 0e7bc93782a393042916cc1392bb011c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red.002_Icosphere.006_Red.002Mat
+    second: {fileID: 2100000, guid: 0e7bc93782a393042916cc1392bb011c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Right_Cylinder.011_Pole.005Mat
+    second: {fileID: 2100000, guid: 7797162e53e503a489483c876e8319e5, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

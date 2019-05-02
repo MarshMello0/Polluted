@@ -16,7 +16,7 @@ public class RoadThread : ThreadedJob
     
     public GeneratedSlot[,] citySlots;
     public List<Road> roads;
-    public static int citySize = 100;
+    public static int citySize = 20;
 
 
     // Do your threaded task. DON'T use the Unity API here
@@ -146,7 +146,7 @@ public class RoadThread : ThreadedJob
         //These two roads are the roads we are going to be finding the random points off of
         Road leftStraightRoad = a1;
         Road rightStraightRoad = a4;
-        int amountOfSideRoads = 4; //This number will be used to how many random points we find
+        int amountOfSideRoads = 1; //This number will be used to how many random points we find
         
         
 
@@ -209,6 +209,11 @@ public class RoadThread : ThreadedJob
                         }
                         break;
                     }
+                    else
+                    {
+                        //If there is no road joining the two straight lines, this should be a building
+                        citySlots[x, y - 1] = new BuildingSlot();
+                    }
                 }
 
                 citySlots[x, y] = rightSlot;
@@ -248,6 +253,11 @@ public class RoadThread : ThreadedJob
                             }
                         }
                         break;
+                    }
+                    else
+                    {
+                        //If there is no road joining the two straight lines, this should be a building
+                        citySlots[x, y - 1] = new BuildingSlot();
                     }
                 }
 
