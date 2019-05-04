@@ -87,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2387128629784294147}
   - component: {fileID: 4369206698012355997}
+  - component: {fileID: 15794817970229596}
   m_Layer: 0
   m_Name: Empty
   m_TagString: Untagged
@@ -122,3 +123,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 105.51463, y: 2, z: 105.27305}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!205 &15794817970229596
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2387128629784129315}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 105.236176
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.40387568
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2387128629781869027}
+  m_Enabled: 1

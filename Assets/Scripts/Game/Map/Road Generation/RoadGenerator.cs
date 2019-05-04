@@ -23,9 +23,11 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] private int spawnSize = 1000;
     
     //These are for generating new cities
+    [SerializeField] private MapGenerator mapGenerator;
     [SerializeField] private float updateDistance;
     [SerializeField] private Transform updatePoint;
     private Vector3 lastUpdatedPosition = Vector3.zero;
+    [SerializeField] private RoomSwitcher roomSwitcher;
     
     
     public static int cityScale = 23;
@@ -34,6 +36,7 @@ public class RoadGenerator : MonoBehaviour
     [Header("A Prefabs")] [SerializeField] private GameObject[] aRoadsPrefabs;
     [Header("S Prefabs")] [SerializeField] private GameObject[] sRoadsPrefabs;
     [Header("Buildings")] [SerializeField] private GameObject[] buildingPrefabs;
+    [Header("Factories")] [SerializeField] private GameObject[] factoriesPrefabs;
     [Header("Cities")]
     //Cities
     public List<City> cities = new List<City>();
@@ -119,13 +122,14 @@ public class RoadGenerator : MonoBehaviour
         yield return StartCoroutine(roadThread.WaitFor());
         string cityName = Cities.GetRandomName();
         
-        GameObject parent = new GameObject(cityName, typeof(DisableGO));
+        GameObject parent = new GameObject(cityName);
         parent.transform.position = roadThread.position;
 
         float scaleBackX = roadThread.position.x * (cityScale - 1);
         float scaleBackZ = roadThread.position.z * (cityScale - 1);
         
         GeneratedSlot[,] generatedSlots = roadThread.citySlots;
+        City lastCity = new City(cityName, roadThread.citySlots, roadThread.roads, roadThread.position);
         if (createDebugLines)
         {
             GameObject lineParent = new GameObject("Debug Lines");
@@ -201,6 +205,18 @@ public class RoadGenerator : MonoBehaviour
                         m.SetColor("_BaseColor", Color.magenta);
                         //Debug.Log(generatedSlots[x,y].GetType() + " X " + x + " Y " + y);
                     }
+                    else if (generatedSlots[x,y] is FactorySlot)
+                    {
+                        if (((FactorySlot) generatedSlots[x, y]).isSpawn)
+                        {
+                            m.SetColor("_BaseColor", Color.yellow);
+                        }
+                        else
+                        {
+                            m.SetColor("_BaseColor", Color.red);
+                        }
+                        
+                    }
                     else
                     {
                         m.SetColor("_BaseColor", Color.black);
@@ -218,9 +234,8 @@ public class RoadGenerator : MonoBehaviour
                 {
                     Vector3 position = new Vector3(
                         ((x + roadThread.position.x) * cityScale) - scaleBackX,
-                        (1 + roadThread.position.y) * cityScale + 2,
+                        GetTerrainHeight(new Vector2(roadThread.position.x, roadThread.position.z), lastCity) + 0.1f,
                         ((y + roadThread.position.z) * cityScale) - scaleBackZ);
-
                     if (generatedSlots[x, y] is RoadSlot)
                     {
                         //checking what type of road it is
@@ -315,17 +330,67 @@ public class RoadGenerator : MonoBehaviour
                         GameObject emptySlot = Instantiate(buildingPrefabs[0], position,
                             Quaternion.Euler(0, 0, 0), roadsParent.transform);
                     }
+                    else if (generatedSlots[x,y] is FactorySlot)
+                    {
+                        FactorySlot slot = (FactorySlot) generatedSlots[x, y];
+                        
+                        if (slot.isSpawn)
+                        {
+                            if (slot.rightSide)
+                            {
+                                GameObject factorySlot = Instantiate(factoriesPrefabs[0], position,
+                                    Quaternion.Euler(0, 0, 0), roadsParent.transform);
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+                    }
                 }
             }
         }
         
         //Adding to the cities list for help connecting roads
-        cities.Add(new City(cityName,roadThread.citySlots,roadThread.roads, roadThread.position)); //this is required to flatten the terrain
+        cities.Add(lastCity); //this is required to flatten the terrain
+        
+        //This calls to the RoomSwitcher to spawn the rooms in as all of the roads and buildings have been spawned
+        roomSwitcher.SetRooms();
     }
 
     public void Log(string message)
     {
         Debug.Log(message);
+    }
+
+    private float GetTerrainHeight(Vector2 position, City city)
+    {
+        int chunkSize = MapGenerator.mapChunkSize - 1;
+        
+        int currentChunkCoordX = Mathf.RoundToInt (position.x / chunkSize);
+        int currentChunkCoordY = Mathf.RoundToInt (position.y / chunkSize);
+        
+        Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX, currentChunkCoordY);
+        
+        Vector2 centre = viewedChunkCoord * chunkSize;
+        
+        float returnValue = Noise.GetHeightAtPoint(
+            MapGenerator.mapChunkSize - 2,
+            MapGenerator.mapChunkSize - 2,
+            position.x,
+            position.y,
+            mapGenerator.seed,
+            mapGenerator.noiseScale,
+            mapGenerator.octaves,
+            mapGenerator.persistance,
+            mapGenerator.lacunarity,
+            centre + mapGenerator.offset,
+            mapGenerator.normalizeMode, 
+            city
+        );
+
+        return returnValue;
+        //(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode, cities);
     }
 
     private void ConnectCities()

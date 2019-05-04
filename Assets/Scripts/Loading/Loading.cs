@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,13 +17,12 @@ public class Loading : MonoBehaviour
     private void Awake()
     {
         startTime = DateTime.Now;
-        CalActions();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 
     private void Start()
     {
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Game"));
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Game")); 
     }
 
     private void CalActions()
@@ -57,3 +57,5 @@ public class Loading : MonoBehaviour
         }
     }
 }
+
+

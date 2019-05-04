@@ -9,6 +9,7 @@ TagManager:
   - Pickupable
   - RoadPoint
   - Terrain
+  - Room
   layers:
   - Default
   - TransparentFX

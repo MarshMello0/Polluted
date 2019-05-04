@@ -152,7 +152,7 @@ public class RoadThread : ThreadedJob
 
         for (int i = 0; i < (citySize / 2) - 2; i += 2)
         {
-            Vector3[] leftRoadPoints = new Vector3[motorwayStartX - 2];
+            Vector3[] leftRoadPoints = new Vector3[motorwayStartX - 2]; //There is some overflow here, not sure why
             Vector3[] rightRoadPoints = new Vector3[citySize - motorwayStartX - 2];
             
             Vector2[] leftRandomPoints = new Vector2[amountOfSideRoads];
@@ -343,6 +343,8 @@ public class RoadThread : ThreadedJob
         float factorySize = 10;
         int leftFactoryRoads = Mathf.FloorToInt(motorwayStartX / factorySize);
         int rightFactoryRoads = Mathf.FloorToInt((citySize - motorwayStartX) / factorySize);
+        citySlots[motorwayStartX + 1,(citySize / 2) + 1] = new FactorySlot(true, true);
+        citySlots[motorwayStartX - 1,(citySize / 2) + 1] = new FactorySlot(true, false);
         
         //Left side
         for (int i = 1; i <= leftFactoryRoads; i++)
@@ -360,6 +362,7 @@ public class RoadThread : ThreadedJob
                 {
                     //There should be a A-road in this slot, so we are going to connect one up
                     CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+                    citySlots[roadX-1,y+1] = new FactorySlot(true, false);
                 }
                 else
                 {
@@ -388,6 +391,7 @@ public class RoadThread : ThreadedJob
                 {
                     //There should be a A-road in this slot, so we are going to connect one up
                     CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+                    citySlots[roadX+1,y+1] = new FactorySlot(true, true);
                 }
                 else
                 {
@@ -398,6 +402,18 @@ public class RoadThread : ThreadedJob
             
             Road currentRoad = new Road(currentRoadPoints, RoadType.S);
             roads.Add(currentRoad);
+        }
+        
+        //This does a for loop coving anything which isn't a road in the factory area
+        for (int x = 0; x < citySize; x++)
+        {
+            for (int y = 0; y < (citySize / 2) - 2; y++)
+            {
+                if (citySlots[x, y + ((citySize / 2) + 1)] is EmptySlot)
+                {
+                    citySlots[x,y + ((citySize / 2) + 1)] = new FactorySlot();
+                }
+            }
         }
 
         #endregion
@@ -432,6 +448,25 @@ public class GeneratedSlot
 public class BuildingSlot : GeneratedSlot
 {
     
+}
+/// <summary>
+/// This is the slot where factory's will spawn.
+/// They won't spawn just on the one tile because they are a much larger asset
+/// </summary>
+public class FactorySlot : GeneratedSlot
+{
+    /// <summary>
+    /// This is if this is the tile that spawns the factory or not
+    /// </summary>
+    public bool isSpawn;
+
+    public bool rightSide;
+
+    public FactorySlot(bool isSpawn = false, bool rightSide = true)
+    {
+        this.isSpawn = isSpawn;
+        this.rightSide = rightSide;
+    }
 }
 
 public class RoadSlot : GeneratedSlot
