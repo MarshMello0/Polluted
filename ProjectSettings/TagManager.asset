@@ -10,6 +10,7 @@ TagManager:
   - RoadPoint
   - Terrain
   - Room
+  - OutofBounds
   layers:
   - Default
   - TransparentFX

@@ -6,11 +6,15 @@ using Random = UnityEngine.Random;
 
 public class RoomSwitcher : MonoBehaviour
 {
+
+    private static readonly int poolSize = 20000;
+    
     [SerializeField] private GameObject[] roomPrefabs;
     
-    private GameObject[] rooms;
     private Loading loading;
     private bool isLoading = true;
+
+    
     
     private void Start()
     {
@@ -26,35 +30,37 @@ public class RoomSwitcher : MonoBehaviour
         }
     }
 
-    private void FindRooms()
-    {
-        rooms = GameObject.FindGameObjectsWithTag("Room");
-        if (isLoading)
-        {
-            loading.totalNumberOfActions += rooms.Length;
-        }
-        
-    }
-
     public void SetRooms()
     {
-        FindRooms();
-        StartCoroutine(DelaySpawn());
+        StartCoroutine(SpawnRooms());
     }
 
-    IEnumerator DelaySpawn()
+    IEnumerator SpawnRooms()
     {
+        GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
+        if (isLoading)
+        {
+            loading.totalNumberOfActions += rooms.Length + 1;
+        }
+        
         for (int i = 0; i < rooms.Length; i++)
         {
             Transform room = rooms[i].transform;
             room.tag = "Untagged";
-            GameObject lastRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], room);
+            int childIndex = Random.Range(0, transform.childCount - 1);
+            Transform pooledRoom = transform.GetChild(childIndex);
+            pooledRoom.SetParent(room);
+            pooledRoom.gameObject.SetActive(true);
             if (isLoading)
             {
                 loading.numberOfActionsCompleted++;
             }
-            yield return new WaitForEndOfFrame(); //Adds a delay to try and reduce the lag
+
+            if (i % 80 == 0)
+            {
+                yield return new WaitForEndOfFrame(); //Adds a delay to try and reduce the lag
+            }
+            
         }
-        rooms = new GameObject[0];
     }
 }

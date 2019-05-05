@@ -16,7 +16,7 @@ public class RoadThread : ThreadedJob
     
     public GeneratedSlot[,] citySlots;
     public List<Road> roads;
-    public static int citySize = 20;
+    public static int citySize = 100;
 
 
     // Do your threaded task. DON'T use the Unity API here
@@ -52,7 +52,7 @@ public class RoadThread : ThreadedJob
          */
         
         //Generate the one motorway from top to bottom
-        int motorwayStartX = rnd.Next(citySize); //Picks a random number from 0 to city size
+        int motorwayStartX = 20 + rnd.Next(citySize - 40); //Picks a random number from 0 to city size
         
         //The motorway is always going to be the size of the city
         Vector3[] points = new Vector3[citySize];
@@ -146,7 +146,7 @@ public class RoadThread : ThreadedJob
         //These two roads are the roads we are going to be finding the random points off of
         Road leftStraightRoad = a1;
         Road rightStraightRoad = a4;
-        int amountOfSideRoads = 1; //This number will be used to how many random points we find
+        int amountOfSideRoads = rnd.Next(0,5); //This number will be used to how many random points we find
         
         
 
@@ -362,7 +362,10 @@ public class RoadThread : ThreadedJob
                 {
                     //There should be a A-road in this slot, so we are going to connect one up
                     CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
-                    citySlots[roadX-1,y+1] = new FactorySlot(true, false);
+                    if (roadX - 1 > 0)
+                    {
+                        citySlots[roadX-1,y+1] = new FactorySlot(true, false);
+                    }
                 }
                 else
                 {
@@ -391,7 +394,10 @@ public class RoadThread : ThreadedJob
                 {
                     //There should be a A-road in this slot, so we are going to connect one up
                     CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
-                    citySlots[roadX+1,y+1] = new FactorySlot(true, true);
+                    if (roadX + 1 < 100)
+                    {
+                        citySlots[roadX + 1, y + 1] = new FactorySlot(true, true);
+                    }
                 }
                 else
                 {

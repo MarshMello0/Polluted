@@ -15,18 +15,7 @@ public class RoadGenerator : MonoBehaviour
     private List<RoadThread> threads = new List<RoadThread>();
 
     private Random rnd;
-
-
-    [Header("Settings")] 
-    [SerializeField] private int cityDistance = 200;
-
-    [SerializeField] private int spawnSize = 1000;
     
-    //These are for generating new cities
-    [SerializeField] private MapGenerator mapGenerator;
-    [SerializeField] private float updateDistance;
-    [SerializeField] private Transform updatePoint;
-    private Vector3 lastUpdatedPosition = Vector3.zero;
     [SerializeField] private RoomSwitcher roomSwitcher;
     
     
@@ -37,9 +26,11 @@ public class RoadGenerator : MonoBehaviour
     [Header("S Prefabs")] [SerializeField] private GameObject[] sRoadsPrefabs;
     [Header("Buildings")] [SerializeField] private GameObject[] buildingPrefabs;
     [Header("Factories")] [SerializeField] private GameObject[] factoriesPrefabs;
-    [Header("Cities")]
+
+    [Header("City")]
     //Cities
-    public List<City> cities = new List<City>();
+    public City city;
+    
     [SerializeField] private List<Road> connectingRoads = new List<Road>();
 
     private Loading loading;
@@ -49,59 +40,11 @@ public class RoadGenerator : MonoBehaviour
     {
         loading = FindObjectOfType<Loading>();
         rnd = new Random(FindObjectOfType<GameInfo>().seed);
-        minAmount = Mathf.FloorToInt(Mathf.RoundToInt((spawnSize * 94) * 2.5f) / (cityDistance * 2f));
-        minAmount = 1;
-        for (int i = 0; i < minAmount; i++)
-        {
-            Generator(Vector3.zero);
-        }
+        
+        //We are now just generating one city at the start, not endless amounts
+        GenerateNewCity(Vector3.zero);
     }
 
-    private void Update()
-    {
-        if (!areConnected)
-        {
-            ConnectCities();
-        }
-
-        if (Vector3.Distance(lastUpdatedPosition, updatePoint.position) > updateDistance)
-        {
-            lastUpdatedPosition = updatePoint.position;
-            Generator(lastUpdatedPosition);
-        }
-    }
-
-    private void Generator(Vector3 offset, int count = 0)
-    {
-        int x = rnd.Next(-spawnSize,spawnSize);
-        int z = rnd.Next(-spawnSize,spawnSize);
-        x *= 94;
-        x = Mathf.RoundToInt(x * 2.5f);
-        z *= 94;
-        z = Mathf.RoundToInt(z * 2.5f);
-        z -= 100;
-        x -= 100;
-        Vector3 position = new Vector3(x ,0,z);
-        position += new Vector3(offset.x, 0, offset.z);
-
-        for (int j = 0; j < cities.Count; j++)
-        {
-            if (Vector3.Distance(cities[j].position, position) < cityDistance)
-            {
-                //Too Close, Re generate
-                if (count > 5)
-                {
-                    //This will only check 5 times
-                    Generator(offset, count += 1);
-                    return;
-                }
-
-                return;
-            }
-        }
-        GenerateNewCity(position);
-    }
-    
 
     private void GenerateNewCity(Vector3 position)
     {
@@ -234,7 +177,7 @@ public class RoadGenerator : MonoBehaviour
                 {
                     Vector3 position = new Vector3(
                         ((x + roadThread.position.x) * cityScale) - scaleBackX,
-                        GetTerrainHeight(new Vector2(roadThread.position.x, roadThread.position.z), lastCity) + 0.1f,
+                        0,
                         ((y + roadThread.position.z) * cityScale) - scaleBackZ);
                     if (generatedSlots[x, y] is RoadSlot)
                     {
@@ -322,7 +265,9 @@ public class RoadGenerator : MonoBehaviour
                     }
                     else if (generatedSlots[x, y] is BuildingSlot)
                     {
-                        GameObject emptySlot = Instantiate(buildingPrefabs[rnd.Next(buildingPrefabs.Length)], position,
+                        int index = rnd.Next(buildingPrefabs.Length);
+                        
+                        GameObject emptySlot = Instantiate(buildingPrefabs[index], position,
                             Quaternion.Euler(0, 0, 0), roadsParent.transform);
                     }
                     else if (generatedSlots[x,y] is EmptySlot)
@@ -351,135 +296,14 @@ public class RoadGenerator : MonoBehaviour
             }
         }
         
-        //Adding to the cities list for help connecting roads
-        cities.Add(lastCity); //this is required to flatten the terrain
+        city = lastCity;
         
         //This calls to the RoomSwitcher to spawn the rooms in as all of the roads and buildings have been spawned
-        roomSwitcher.SetRooms();
+        //roomSwitcher.SetRooms();
     }
 
     public void Log(string message)
     {
         Debug.Log(message);
-    }
-
-    private float GetTerrainHeight(Vector2 position, City city)
-    {
-        int chunkSize = MapGenerator.mapChunkSize - 1;
-        
-        int currentChunkCoordX = Mathf.RoundToInt (position.x / chunkSize);
-        int currentChunkCoordY = Mathf.RoundToInt (position.y / chunkSize);
-        
-        Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX, currentChunkCoordY);
-        
-        Vector2 centre = viewedChunkCoord * chunkSize;
-        
-        float returnValue = Noise.GetHeightAtPoint(
-            MapGenerator.mapChunkSize - 2,
-            MapGenerator.mapChunkSize - 2,
-            position.x,
-            position.y,
-            mapGenerator.seed,
-            mapGenerator.noiseScale,
-            mapGenerator.octaves,
-            mapGenerator.persistance,
-            mapGenerator.lacunarity,
-            centre + mapGenerator.offset,
-            mapGenerator.normalizeMode, 
-            city
-        );
-
-        return returnValue;
-        //(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode, cities);
-    }
-
-    private void ConnectCities()
-    {
-        if (minAmount == cities.Count)
-        {
-            Debug.Log("All of the cities have been generated");
-            areConnected = true;
-            City firstEntranceCity = null;
-            City secondEntranceCity = null;
-            foreach (City city in cities)
-            {
-                //I added these bool because there was an error when nothing had changed as there already a connection
-                bool firstHasChanged = false;
-                bool secondHasChanged = false;
-                //Down on Z for first point
-                //Up on Z for second
-                float firstDistance = float.MaxValue;
-                float secondDistance = float.MaxValue;
-                foreach (City checkCity in cities)
-                {
-                    if (city.firstHasConnection)
-                    {
-                        //If the bottom already has a connection
-                        //Debug.Log(string.Format("City {0} already has a first connection", city.name));
-                        continue;
-                    }
-                    else if (checkCity.secondEntrance.z < city.firstEntrance.z && !checkCity.secondHasConnection)
-                    {
-                        if (Vector3.Distance(checkCity.secondEntrance, city.firstEntrance) < firstDistance)
-                        {
-                            firstDistance = Vector3.Distance(checkCity.secondEntrance, city.firstEntrance);
-                            firstEntranceCity = checkCity;
-                            city.firstHasConnection = true;
-                            firstHasChanged = true;
-                        }
-                        else continue;
-                    }
-                    else if (city.secondHasConnection)
-                    {
-                        //If the top has already been connected
-                        //Debug.Log(string.Format("City {0} already has a second connection", city.name));
-                        continue;
-                    }
-                    else if (checkCity.firstEntrance.z > city.secondEntrance.z && !checkCity.firstHasConnection)
-                    {
-                        if (Vector3.Distance(checkCity.firstEntrance, city.secondEntrance) < secondDistance)
-                        {
-                            secondDistance = Vector3.Distance(checkCity.firstEntrance, city.secondEntrance);
-                            secondEntranceCity = checkCity;
-                            city.secondHasConnection = true;
-                            secondHasChanged = true;
-                        }
-                        continue;
-                    }
-                }
-
-                if (firstHasChanged)
-                {
-                    //Debug.Log(string.Format("Connecting {0}'s bottom to {1}'s top", city.name,firstEntranceCity.name));
-                    CreateConnectingRoads(city.firstEntrance, firstEntranceCity.secondEntrance);
-                    firstEntranceCity.secondHasConnection = true;
-                }
-
-                if (secondHasChanged)
-                {
-                    //Debug.Log(string.Format("Connecting {0}'s top to {1}'s bottom", city.name,secondEntranceCity.name));
-                    CreateConnectingRoads(city.secondEntrance, secondEntranceCity.firstEntrance);
-                    secondEntranceCity.firstHasConnection = true;
-                }
-            }
-        }
-    }
-    
-    
-
-    private void CreateConnectingRoads(Vector3 start, Vector3 end)
-    {
-        if (createDebugLines)
-        {
-            GameObject last = Instantiate(roadDebugLine);
-            last.name = "Connecting Road";
-            LineRenderer lineRenderer = last.GetComponent<LineRenderer>();
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, start);
-            lineRenderer.SetPosition(1, end);
-
-            lineRenderer.startColor = Color.red;
-            lineRenderer.endColor = Color.green;
-        }
     }
 }
