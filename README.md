@@ -10,3 +10,7 @@ My original proposal for the game idea can be found on my [WordPress here](https
 These files are the whole Unity project including the Blender files which I created the assets in.
 
 The releases are the final build of the game which you would give to players to play.
+
+## Extra Info
+This was game was created in Unity 2018.3.12f1
+Assets were created in Blender 2.8 Beta
