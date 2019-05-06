@@ -16,7 +16,7 @@ public class Loading : MonoBehaviour
     [SerializeField] private Slider slider;
     private void Awake()
     {
-        totalNumberOfActions = 0;
+        totalNumberOfActions = -1;
         numberOfActionsCompleted = 0;
         startTime = DateTime.Now;
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
@@ -38,11 +38,12 @@ public class Loading : MonoBehaviour
     {
         if (totalNumberOfActions == numberOfActionsCompleted)
         {
-            Debug.Log(string.Format("{0} {1}", totalNumberOfActions, numberOfActionsCompleted));
             DateTime finished = DateTime.Now;
             TimeSpan duration = finished.Subtract(startTime);
             CustomDebug.Log(CustomDebug.Type.Log, string.Format("Finished loading in {0} milliseconds", duration.TotalMilliseconds));
-            SceneManager.UnloadSceneAsync(1);
+            
+            //Unloading the scene is handeled in the update loop of RoadGenerator.cs
+            
         }
     }
 }

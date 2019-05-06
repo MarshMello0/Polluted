@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class RoadGenerator : MonoBehaviour
@@ -16,9 +17,6 @@ public class RoadGenerator : MonoBehaviour
 
     private Random rnd;
     
-    [SerializeField] private RoomSwitcher roomSwitcher;
-    
-    
     public static int cityScale = 23;
     private int minAmount = 0;
     [Header("M Prefabs")] [SerializeField] private GameObject[] mRoadsPrefabs;
@@ -30,15 +28,18 @@ public class RoadGenerator : MonoBehaviour
     [Header("City")]
     //Cities
     public City city;
-    
+
+    [SerializeField] private GameObject player, miniMap;
     [SerializeField] private List<Road> connectingRoads = new List<Road>();
 
     private Loading loading;
+    private bool isLoading = true;
     private bool areConnected;
     private bool meshFlattened;
     private void Awake()
     {
         loading = FindObjectOfType<Loading>();
+        loading.totalNumberOfActions = RoadThread.citySize * RoadThread.citySize;
         rnd = new Random(FindObjectOfType<GameInfo>().seed);
         
         //We are now just generating one city at the start, not endless amounts
@@ -292,6 +293,8 @@ public class RoadGenerator : MonoBehaviour
                             }
                         }
                     }
+
+                    loading.numberOfActionsCompleted++;
                 }
             }
         }
@@ -305,5 +308,19 @@ public class RoadGenerator : MonoBehaviour
     public void Log(string message)
     {
         Debug.Log(message);
+    }
+
+    private void Update()
+    {
+        if (isLoading)
+        {
+            if (loading.totalNumberOfActions == loading.numberOfActionsCompleted)
+            {
+                player.SetActive(true);
+                miniMap.SetActive(true);
+                SceneManager.UnloadSceneAsync(1);
+                isLoading = false;
+            }
+        }
     }
 }

@@ -12,13 +12,14 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> panelsList;
 
-    [SerializeField] private GameObject mainSection, pauseMenu;
+    [SerializeField] private GameObject mainSection, pauseMenu, miniMap;
 
     private KeyCode kPause;
     private bool hasChangedControls;
     
     [SerializeField] private PlayerController playerController;
     [SerializeField] private ControlsUI controlsUI;
+    [SerializeField] private PlayerStats playerStats;
     
 
     private void Start()
@@ -51,7 +52,8 @@ public class PauseMenuManager : MonoBehaviour
     {
         if (!pauseMenu.activeInHierarchy && Input.GetKeyDown(kPause))
         {
-            pauseMenu.SetActive(true);
+            SetPauseMenu(true);
+            
             playerController.inUI = true;
             Mouse.Lock(false);
             Time.timeScale = 0;
@@ -63,6 +65,14 @@ public class PauseMenuManager : MonoBehaviour
                 Continue();
             }
         }
+    }
+
+    private void SetPauseMenu(bool state)
+    {
+        pauseMenu.SetActive(state);
+        miniMap.SetActive(!state);
+
+        playerStats.isPaused = state;
     }
 
     public void Exit()
@@ -114,7 +124,7 @@ public class PauseMenuManager : MonoBehaviour
     public void Continue()
     {
         mainSection.SetActive(false);
-        pauseMenu.SetActive(false);
+        SetPauseMenu(false);
         Mouse.Lock(true);
         playerController.inUI = false;
         Time.timeScale = 1;
