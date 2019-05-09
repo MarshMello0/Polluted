@@ -12,7 +12,10 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> panelsList;
 
-    [SerializeField] private GameObject mainSection, pauseMenu, miniMap;
+    [SerializeField] private GameObject mainSection, pauseMenu, miniMap, tutorial;
+
+    [HideInInspector] public bool finishedTutorial;
+    [HideInInspector] public bool isPaused;
 
     private KeyCode kPause;
     private bool hasChangedControls;
@@ -53,10 +56,6 @@ public class PauseMenuManager : MonoBehaviour
         if (!pauseMenu.activeInHierarchy && Input.GetKeyDown(kPause))
         {
             SetPauseMenu(true);
-            
-            playerController.inUI = true;
-            Mouse.Lock(false);
-            Time.timeScale = 0;
         }
         else if (pauseMenu.activeInHierarchy)
         {
@@ -67,12 +66,27 @@ public class PauseMenuManager : MonoBehaviour
         }
     }
 
-    private void SetPauseMenu(bool state)
+    public void SetPauseMenu(bool state)
     {
+        if (state)
+        {
+            playerController.inUI = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            playerController.inUI = false;
+            Time.timeScale = 1;
+        }
+        Mouse.Lock(!state);
         pauseMenu.SetActive(state);
         miniMap.SetActive(!state);
+        
+        if (!finishedTutorial)
+            tutorial.SetActive(!state);
 
         playerStats.isPaused = state;
+        isPaused = state;
     }
 
     public void Exit()
@@ -85,6 +99,12 @@ public class PauseMenuManager : MonoBehaviour
         Enable("Options");
         hasChangedControls = true;
     }
+
+    public void Dead()
+    {
+        Enable("Dead");
+    }
+    
 
     private void DisableAll()
     {
@@ -112,7 +132,8 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Quit(bool save)
     {
-        Debug.Log("Quitting Save = " + save);
+        Debug.Log("Quitting");
+        SceneManager.LoadScene(0);
     }
 
     public void CancelQuit()
@@ -125,9 +146,7 @@ public class PauseMenuManager : MonoBehaviour
     {
         mainSection.SetActive(false);
         SetPauseMenu(false);
-        Mouse.Lock(true);
-        playerController.inUI = false;
-        Time.timeScale = 1;
+        
         if (hasChangedControls)
         {
             controlsUI.SaveControls();

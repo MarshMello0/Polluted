@@ -1,0 +1,223 @@
+fileFormatVersion: 2
+guid: 452210643d4db2f498e7d68a3b742c99
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Aircon.001_Cube.062_None
+    100002: Aircon.002_Cube.063_None
+    100004: Aircon.003_Cube.064_Aircons
+    100006: Aircon.004_Cube.065_None
+    100008: Aircon.005_Cube.066_None
+    100010: Aircon_Cube.061_None
+    100012: Building_Cube.006_None
+    100014: Cube.003_Cube.079_Buildings
+    100016: //RootNode
+    100018: Factory_Cube_Path
+    100020: Truck_Entrance.001_Cube.068_None
+    100022: Truck_Entrance.002_Cube.069_None
+    100024: Truck_Entrance.003_Cube.070_None
+    100026: Truck_Entrance.004_Cube.071_None
+    100028: Truck_Entrance.005_Cube.072_None
+    100030: Truck_Entrance.006_Cube.073_None
+    100032: Truck_Entrance.007_Cube.074_None
+    100034: Truck_Entrance.008_Cube.075_None
+    100036: Truck_Entrance.009_Cube.076_None
+    100038: Truck_Entrance.010_Cube.077_None
+    100040: Truck_Entrance.011_Cube.078_None
+    100042: Truck_Entrance_Cube.067_Truck_Entrance
+    400000: Aircon.001_Cube.062_None
+    400002: Aircon.002_Cube.063_None
+    400004: Aircon.003_Cube.064_Aircons
+    400006: Aircon.004_Cube.065_None
+    400008: Aircon.005_Cube.066_None
+    400010: Aircon_Cube.061_None
+    400012: Building_Cube.006_None
+    400014: Cube.003_Cube.079_Buildings
+    400016: //RootNode
+    400018: Factory_Cube_Path
+    400020: Truck_Entrance.001_Cube.068_None
+    400022: Truck_Entrance.002_Cube.069_None
+    400024: Truck_Entrance.003_Cube.070_None
+    400026: Truck_Entrance.004_Cube.071_None
+    400028: Truck_Entrance.005_Cube.072_None
+    400030: Truck_Entrance.006_Cube.073_None
+    400032: Truck_Entrance.007_Cube.074_None
+    400034: Truck_Entrance.008_Cube.075_None
+    400036: Truck_Entrance.009_Cube.076_None
+    400038: Truck_Entrance.010_Cube.077_None
+    400040: Truck_Entrance.011_Cube.078_None
+    400042: Truck_Entrance_Cube.067_Truck_Entrance
+    2100000: None
+    2100002: Aircons
+    2100004: Buildings
+    2100006: Path
+    2100008: Truck_Entrance
+    2300000: Aircon.001_Cube.062_None
+    2300002: Aircon.002_Cube.063_None
+    2300004: Aircon.003_Cube.064_Aircons
+    2300006: Aircon.004_Cube.065_None
+    2300008: Aircon.005_Cube.066_None
+    2300010: Aircon_Cube.061_None
+    2300012: Building_Cube.006_None
+    2300014: Cube.003_Cube.079_Buildings
+    2300016: Factory_Cube_Path
+    2300018: Truck_Entrance.001_Cube.068_None
+    2300020: Truck_Entrance.002_Cube.069_None
+    2300022: Truck_Entrance.003_Cube.070_None
+    2300024: Truck_Entrance.004_Cube.071_None
+    2300026: Truck_Entrance.005_Cube.072_None
+    2300028: Truck_Entrance.006_Cube.073_None
+    2300030: Truck_Entrance.007_Cube.074_None
+    2300032: Truck_Entrance.008_Cube.075_None
+    2300034: Truck_Entrance.009_Cube.076_None
+    2300036: Truck_Entrance.010_Cube.077_None
+    2300038: Truck_Entrance.011_Cube.078_None
+    2300040: Truck_Entrance_Cube.067_Truck_Entrance
+    3300000: Aircon.001_Cube.062_None
+    3300002: Aircon.002_Cube.063_None
+    3300004: Aircon.003_Cube.064_Aircons
+    3300006: Aircon.004_Cube.065_None
+    3300008: Aircon.005_Cube.066_None
+    3300010: Aircon_Cube.061_None
+    3300012: Building_Cube.006_None
+    3300014: Cube.003_Cube.079_Buildings
+    3300016: Factory_Cube_Path
+    3300018: Truck_Entrance.001_Cube.068_None
+    3300020: Truck_Entrance.002_Cube.069_None
+    3300022: Truck_Entrance.003_Cube.070_None
+    3300024: Truck_Entrance.004_Cube.071_None
+    3300026: Truck_Entrance.005_Cube.072_None
+    3300028: Truck_Entrance.006_Cube.073_None
+    3300030: Truck_Entrance.007_Cube.074_None
+    3300032: Truck_Entrance.008_Cube.075_None
+    3300034: Truck_Entrance.009_Cube.076_None
+    3300036: Truck_Entrance.010_Cube.077_None
+    3300038: Truck_Entrance.011_Cube.078_None
+    3300040: Truck_Entrance_Cube.067_Truck_Entrance
+    4300000: Aircon.001_Cube.062_None
+    4300002: Aircon.002_Cube.063_None
+    4300004: Aircon.003_Cube.064_Aircons
+    4300006: Aircon.004_Cube.065_None
+    4300008: Aircon.005_Cube.066_None
+    4300010: Aircon_Cube.061_None
+    4300012: Building_Cube.006_None
+    4300014: Cube.003_Cube.079_Buildings
+    4300016: Factory_Cube_Path
+    4300018: Truck_Entrance.001_Cube.068_None
+    4300020: Truck_Entrance.002_Cube.069_None
+    4300022: Truck_Entrance.003_Cube.070_None
+    4300024: Truck_Entrance.004_Cube.071_None
+    4300026: Truck_Entrance.005_Cube.072_None
+    4300028: Truck_Entrance.006_Cube.073_None
+    4300030: Truck_Entrance.007_Cube.074_None
+    4300032: Truck_Entrance.008_Cube.075_None
+    4300034: Truck_Entrance.009_Cube.076_None
+    4300036: Truck_Entrance.010_Cube.077_None
+    4300038: Truck_Entrance.011_Cube.078_None
+    4300040: Truck_Entrance_Cube.067_Truck_Entrance
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Aircons
+    second: {fileID: 2100000, guid: 1e55082efc73d3346a6deb082c3e28a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Buildings
+    second: {fileID: 2100000, guid: ada6118a0a71ccf478a46e96ad05c569, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Path
+    second: {fileID: 2100000, guid: 8a1b922b059ea2a4c89f077d4f2e7ad3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Truck_Entrance
+    second: {fileID: 2100000, guid: b539d71783aad9243a8cddd3c3dfe605, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

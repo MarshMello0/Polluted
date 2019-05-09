@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,9 +17,10 @@ public class PlayerController : MonoBehaviour
     [Space]
     
     [Header("Movement Controls")] 
-    [SerializeField] private KeyCode kForward;
-    [SerializeField] private KeyCode kBackward, kRight, kLeft, kJump, kSprint;
-    [SerializeField] private KeyCode kInventory; 
+    public KeyCode kForward;
+    public KeyCode kBackward, kRight, kLeft, kJump, kSprint;
+    [SerializeField] private KeyCode kInventory;
+    [SerializeField] private KeyCode kScreenshot = KeyCode.F12;
     
     [Space]
     
@@ -28,32 +31,43 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxWalkingSpeed;
     [SerializeField] private float maxSprintSpeed;
     [SerializeField] private float gravityIncrease;
+    [SerializeField] private float gravity;
     [SerializeField] private float maxFallSpeed;
-    [SerializeField] private Transform groundChecker;
+    [SerializeField] private Transform groundChecker, headCheacker;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float groundDistance = 0.2f;
     [SerializeField] private LayerMask floorMask;
     private Vector3 _inputs;
     private bool isGrounded;
-    private Rigidbody _rigidbody;
+    [SerializeField] private CharacterController characterController;
 
     [HideInInspector]
     public bool inUI;
     private InventoryManager _inventoryManager;
 
+    [SerializeField] private GameObject miniMap;
+
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         _cameraTransform = transform.GetChild(0);
         _inventoryManager = GetComponent<InventoryManager>();
         maxSpeed = maxWalkingSpeed;
         SetControls();
         Mouse.Lock(true);
+
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Respawn");
+        int index = Random.Range(0, spawns.Length - 1);
+        transform.position = spawns[index].transform.position;
     }
 
     private void Update()
     {
         CameraMovement();
+
+        if (Input.GetKeyDown(kScreenshot))
+        {
+            StartCoroutine(TakeScreenShot());
+        }
     }
 
     private void FixedUpdate()
@@ -81,7 +95,8 @@ public class PlayerController : MonoBehaviour
     {
         //Checking if the player is grounded
         isGrounded = Physics.CheckSphere(groundChecker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
-
+        bool hitHead = Physics.CheckSphere(headCheacker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
+        
         //Checking to see if they are sprinting
         if (Input.GetKeyDown(kSprint))
         {
@@ -95,7 +110,21 @@ public class PlayerController : MonoBehaviour
         //Checking for keys being pressed
         if (Input.GetKeyDown(kJump) && isGrounded)
         {
+            isGrounded = false;
             _inputs.y = jumpHeight;
+        }
+        else if (isGrounded)
+        {
+            _inputs.y = gravity;
+        }
+        else if (!isGrounded)
+        {
+            _inputs.y -= gravityIncrease;
+        }
+        //Because there is no rigidbody, we need to make our own physics
+        if (hitHead && _inputs.y > 0)
+        {
+            _inputs.y = 0;
         }
         
         if (Input.GetKey(kForward))
@@ -116,11 +145,7 @@ public class PlayerController : MonoBehaviour
             _inputs.x += movementSpeed;
         }
         
-        //Gravity
-        if (!isGrounded)
-        {
-            _inputs.y -= gravityIncrease;
-        }
+
 
         //Clamping the max speed
         if (_inputs.x > maxSpeed)
@@ -135,13 +160,11 @@ public class PlayerController : MonoBehaviour
             _inputs.y = -maxFallSpeed;
         
         //Moving the player at a fixed frame rate
-        _rigidbody.MovePosition(transform.TransformPoint(_inputs * Time.fixedDeltaTime));
-
+        characterController.Move(transform.TransformVector(_inputs * Time.deltaTime));
+        
         //Slowing down the player back to 0
         _inputs.x = Mathf.Lerp(_inputs.x, 0f, breakingSpeed * Time.fixedDeltaTime);
         _inputs.z = Mathf.Lerp(_inputs.z, 0f, breakingSpeed * Time.fixedDeltaTime);
-        if (isGrounded && _inputs.y < 2.1f)
-            _inputs.y = 0;
     }
 
     private void CameraMovement()
@@ -186,5 +209,46 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private IEnumerator TakeScreenShot()
+    {
+        miniMap.SetActive(false);
+        yield return new WaitForSeconds(1);
+        ScreenCapture.CaptureScreenshot(
+            string.Format("{0}/screenshot_{1}_{2}_{3}.png", Directory.GetCurrentDirectory(), DateTime.Now.Hour,
+                DateTime.Now.Minute, DateTime.Now.Second),
+            10);
+        
+        yield return new WaitForSeconds(1);
+        miniMap.SetActive(true);
+    }
+    
+    float pushPower = 2.0f;
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        // no rigidbody
+        if (body == null || body.isKinematic)
+        {
+            return;
+        }
+
+        // We dont want to push objects below us
+        if (hit.moveDirection.y < -0.3)
+        {
+            return;
+        }
+
+        // Calculate push direction from move direction,
+        // we only push objects to the sides never up and down
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+
+        // If you know how fast your character is trying to move,
+        // then you can also multiply the push velocity by that.
+
+        // Apply the push
+        body.velocity = pushDir * pushPower;
     }
 }

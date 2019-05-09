@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-
 public class MainMenuManger : MonoBehaviour
 {
     private Dictionary<string, GameObject> panels;
@@ -11,7 +12,6 @@ public class MainMenuManger : MonoBehaviour
     private TextMeshProUGUI mainTitle;
     [SerializeField]
     private List<GameObject> panelsList;
-
     private void Start()
     {
         panels = new Dictionary<string, GameObject>();

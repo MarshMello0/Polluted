@@ -37,6 +37,14 @@ ModelImporter:
     100062: Stairs.001_Cube.028_None
     100064: Stairs_2_Cube.026_None
     100066: Stairs_Cube.003_None
+    100068: Floor_1.001_Cube.030_InsideFloor
+    100070: Floor_1_Cube_InsideFloor
+    100072: Floor_2_Cube.005_InsideFloor
+    100074: Floor_4_Cube.023_TopRoof
+    100076: Front_Wall_Cube.002_Walls
+    100078: Stairs.001_Cube.028_Stairs
+    100080: Stairs_2_Cube.026_Stairs
+    100082: Stairs_Cube.003_Stairs
     400000: Cube_Cube.001_None
     400002: //RootNode
     400004: Ground_Plane.001_Path.000
@@ -71,8 +79,20 @@ ModelImporter:
     400062: Stairs.001_Cube.028_None
     400064: Stairs_2_Cube.026_None
     400066: Stairs_Cube.003_None
+    400068: Floor_1.001_Cube.030_InsideFloor
+    400070: Floor_1_Cube_InsideFloor
+    400072: Floor_2_Cube.005_InsideFloor
+    400074: Floor_4_Cube.023_TopRoof
+    400076: Front_Wall_Cube.002_Walls
+    400078: Stairs.001_Cube.028_Stairs
+    400080: Stairs_2_Cube.026_Stairs
+    400082: Stairs_Cube.003_Stairs
     2100000: None
     2100002: Path.000
+    2100004: InsideFloor
+    2100006: TopRoof
+    2100008: Walls
+    2100010: Stairs
     2300000: Cube_Cube.001_None
     2300002: Ground_Plane.001_Path.000
     2300004: Back_Wall_Cube.003_None
@@ -106,6 +126,14 @@ ModelImporter:
     2300060: Stairs.001_Cube.028_None
     2300062: Stairs_2_Cube.026_None
     2300064: Stairs_Cube.003_None
+    2300066: Floor_1.001_Cube.030_InsideFloor
+    2300068: Floor_1_Cube_InsideFloor
+    2300070: Floor_2_Cube.005_InsideFloor
+    2300072: Floor_4_Cube.023_TopRoof
+    2300074: Front_Wall_Cube.002_Walls
+    2300076: Stairs.001_Cube.028_Stairs
+    2300078: Stairs_2_Cube.026_Stairs
+    2300080: Stairs_Cube.003_Stairs
     3300000: Cube_Cube.001_None
     3300002: Ground_Plane.001_Path.000
     3300004: Back_Wall_Cube.003_None
@@ -139,6 +167,14 @@ ModelImporter:
     3300060: Stairs.001_Cube.028_None
     3300062: Stairs_2_Cube.026_None
     3300064: Stairs_Cube.003_None
+    3300066: Floor_1.001_Cube.030_InsideFloor
+    3300068: Floor_1_Cube_InsideFloor
+    3300070: Floor_2_Cube.005_InsideFloor
+    3300072: Floor_4_Cube.023_TopRoof
+    3300074: Front_Wall_Cube.002_Walls
+    3300076: Stairs.001_Cube.028_Stairs
+    3300078: Stairs_2_Cube.026_Stairs
+    3300080: Stairs_Cube.003_Stairs
     4300000: Cube_Cube.001_None
     4300002: Ground_Plane.001_Path.000
     4300004: Back_Wall_Cube.003_None
@@ -172,8 +208,21 @@ ModelImporter:
     4300060: Stairs.001_Cube.028_None
     4300062: Stairs_2_Cube.026_None
     4300064: Stairs_Cube.003_None
+    4300066: Floor_1.001_Cube.030_InsideFloor
+    4300068: Floor_1_Cube_InsideFloor
+    4300070: Floor_2_Cube.005_InsideFloor
+    4300072: Floor_4_Cube.023_TopRoof
+    4300074: Front_Wall_Cube.002_Walls
+    4300076: Stairs.001_Cube.028_Stairs
+    4300078: Stairs_2_Cube.026_Stairs
+    4300080: Stairs_Cube.003_Stairs
     2186277476908879412: ImportLogs
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: InsideFloor
+    second: {fileID: 2100000, guid: 5814b0719665bb3448f83f85cfe73128, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -184,6 +233,21 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Path.000
     second: {fileID: 2100000, guid: 8a1b922b059ea2a4c89f077d4f2e7ad3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stairs
+    second: {fileID: 2100000, guid: 2ace8b64b37ac48489e54618e71c3ad7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TopRoof
+    second: {fileID: 2100000, guid: 565724ac327afd0478e048e1f14422d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Walls
+    second: {fileID: 2100000, guid: 34873340bdbf46347ab490404f8cc0ff, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

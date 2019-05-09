@@ -11,8 +11,6 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private DefaultSettings defaultSettings;
     [SerializeField] private ControlsUI controlsUi;
 
-    [Header("Game Objects")] 
-    [SerializeField] private TMP_InputField viewDistance;
 
     private void Start()
     {
@@ -56,9 +54,6 @@ public class SettingsManager : MonoBehaviour
         {
             switch (setting.settingName)
             {
-                case "i_viewdistance":
-                    viewDistance.text = setting.value;
-                    break;
                 default:
                     CustomDebug.Log(CustomDebug.Type.Warning,string.Format("Couldn't find the setting called {0} with the value of {1} ", setting.settingName, setting.value));
                     break;

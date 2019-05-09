@@ -67,6 +67,7 @@ public class RoadGenerator : MonoBehaviour
         string cityName = Cities.GetRandomName();
         
         GameObject parent = new GameObject(cityName);
+        parent.tag = "City";
         parent.transform.position = roadThread.position;
 
         float scaleBackX = roadThread.position.x * (cityScale - 1);
@@ -282,14 +283,18 @@ public class RoadGenerator : MonoBehaviour
                         
                         if (slot.isSpawn)
                         {
+                            int index = rnd.Next(factoriesPrefabs.Length);
                             if (slot.rightSide)
                             {
-                                GameObject factorySlot = Instantiate(factoriesPrefabs[0], position,
+                                GameObject factorySlot = Instantiate(factoriesPrefabs[index], position,
                                     Quaternion.Euler(0, 0, 0), roadsParent.transform);
                             }
                             else
                             {
-                                
+                                //Need to move the asset over on the left side
+                                GameObject factorySlot = Instantiate(factoriesPrefabs[index], position,
+                                    Quaternion.Euler(0, 0, 0), roadsParent.transform);
+                                factorySlot.transform.localPosition += Vector3.left * 46.88f;
                             }
                         }
                     }

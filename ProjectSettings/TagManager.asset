@@ -12,6 +12,7 @@ TagManager:
   - Room
   - OutofBounds
   - LoadedRoom
+  - City
   layers:
   - Default
   - TransparentFX

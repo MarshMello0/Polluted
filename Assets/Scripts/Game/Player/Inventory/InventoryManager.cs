@@ -110,6 +110,20 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void ClearInventory()
+    {
+        slots.Clear();
+        slots.TrimExcess();
+        amounts.Clear();
+        amounts.TrimExcess();
+        
+        for (int i = 0; i < inventorySize; i++)
+        {
+            slots.Add(new Item());
+            amounts.Add(0);
+        }
+    }
+
     public Sprite GetItem(int slot)
     {
         return slots[slot].image;

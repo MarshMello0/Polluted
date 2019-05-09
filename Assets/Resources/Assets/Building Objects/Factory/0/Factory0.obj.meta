@@ -6,18 +6,91 @@ ModelImporter:
     100000: //RootNode
     100002: Factory_Cube_Material
     100004: Factory_Cube_Path
+    100006: Cube.002_Cube.060_None
+    100008: Front_Wall.001_Cube.005_None
+    100010: Front_Wall.002_Cube.058_None
+    100012: Front_Wall_Cube.003_None
+    100014: Side_Left.001_Cube.059_None
+    100016: Side_Left_Cube.004_None
+    100018: Cube.002_Cube.060_Buildings
+    100020: Cylinder.008_Cylinder.008_Top
+    100022: Cylinder.015_Cylinder.016_Top
+    100024: Cylinder.016_Cylinder.009_Top
+    100026: Cylinder.017_Cylinder.017_Top
+    100028: Front_Wall.001_Cube.005_Buildings
+    100030: Front_Wall.002_Cube.058_Buildings
     400000: //RootNode
     400002: Factory_Cube_Material
     400004: Factory_Cube_Path
+    400006: Cube.002_Cube.060_None
+    400008: Front_Wall.001_Cube.005_None
+    400010: Front_Wall.002_Cube.058_None
+    400012: Front_Wall_Cube.003_None
+    400014: Side_Left.001_Cube.059_None
+    400016: Side_Left_Cube.004_None
+    400018: Cube.002_Cube.060_Buildings
+    400020: Cylinder.008_Cylinder.008_Top
+    400022: Cylinder.015_Cylinder.016_Top
+    400024: Cylinder.016_Cylinder.009_Top
+    400026: Cylinder.017_Cylinder.017_Top
+    400028: Front_Wall.001_Cube.005_Buildings
+    400030: Front_Wall.002_Cube.058_Buildings
     2100000: Material
     2100002: Path
+    2100004: None
+    2100006: Buildings
+    2100008: Top
     2300000: Factory_Cube_Material
     2300002: Factory_Cube_Path
+    2300004: Cube.002_Cube.060_None
+    2300006: Front_Wall.001_Cube.005_None
+    2300008: Front_Wall.002_Cube.058_None
+    2300010: Front_Wall_Cube.003_None
+    2300012: Side_Left.001_Cube.059_None
+    2300014: Side_Left_Cube.004_None
+    2300016: Cube.002_Cube.060_Buildings
+    2300018: Cylinder.008_Cylinder.008_Top
+    2300020: Cylinder.015_Cylinder.016_Top
+    2300022: Cylinder.016_Cylinder.009_Top
+    2300024: Cylinder.017_Cylinder.017_Top
+    2300026: Front_Wall.001_Cube.005_Buildings
+    2300028: Front_Wall.002_Cube.058_Buildings
     3300000: Factory_Cube_Material
     3300002: Factory_Cube_Path
+    3300004: Cube.002_Cube.060_None
+    3300006: Front_Wall.001_Cube.005_None
+    3300008: Front_Wall.002_Cube.058_None
+    3300010: Front_Wall_Cube.003_None
+    3300012: Side_Left.001_Cube.059_None
+    3300014: Side_Left_Cube.004_None
+    3300016: Cube.002_Cube.060_Buildings
+    3300018: Cylinder.008_Cylinder.008_Top
+    3300020: Cylinder.015_Cylinder.016_Top
+    3300022: Cylinder.016_Cylinder.009_Top
+    3300024: Cylinder.017_Cylinder.017_Top
+    3300026: Front_Wall.001_Cube.005_Buildings
+    3300028: Front_Wall.002_Cube.058_Buildings
     4300000: Factory_Cube_Material
     4300002: Factory_Cube_Path
+    4300004: Cube.002_Cube.060_None
+    4300006: Front_Wall.001_Cube.005_None
+    4300008: Front_Wall.002_Cube.058_None
+    4300010: Front_Wall_Cube.003_None
+    4300012: Side_Left.001_Cube.059_None
+    4300014: Side_Left_Cube.004_None
+    4300016: Cube.002_Cube.060_Buildings
+    4300018: Cylinder.008_Cylinder.008_Top
+    4300020: Cylinder.015_Cylinder.016_Top
+    4300022: Cylinder.016_Cylinder.009_Top
+    4300024: Cylinder.017_Cylinder.017_Top
+    4300026: Front_Wall.001_Cube.005_Buildings
+    4300028: Front_Wall.002_Cube.058_Buildings
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None
+    second: {fileID: 2100000, guid: 114b7388fe8223b4cbc61ee716324b50, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

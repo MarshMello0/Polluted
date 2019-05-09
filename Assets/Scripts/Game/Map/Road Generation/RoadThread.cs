@@ -340,7 +340,7 @@ public class RoadThread : ThreadedJob
         
         //First we want to work out how many times we can move along on one side
         //
-        float factorySize = 10;
+        float factorySize = 4;
         int leftFactoryRoads = Mathf.FloorToInt(motorwayStartX / factorySize);
         int rightFactoryRoads = Mathf.FloorToInt((citySize - motorwayStartX) / factorySize);
         citySlots[motorwayStartX + 1,(citySize / 2) + 1] = new FactorySlot(true, true);
@@ -350,27 +350,24 @@ public class RoadThread : ThreadedJob
         for (int i = 1; i <= leftFactoryRoads; i++)
         {
             int roadX = Mathf.RoundToInt(motorwayStartX - (factorySize * i));
-            
+            int distance = citySize / 2 - 2;
             //For the distance between the middle road and the top road, we create a straight line on x
-            Vector3[] currentRoadPoints = new Vector3[citySize / 2]; //This should be half the size
-            for (int j = 0; j < citySize / 2; j++)
+            Vector3[] currentRoadPoints = new Vector3[distance]; //This should be half the size
+            
+            CheckSlotForRoad(roadX,citySize / 2,roadX,citySize / 2, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            
+            for (int j = 0; j < distance; j++)
             {
-                int y = j + citySize / 2;
+                int y = j + citySize / 2 + 1;
                 currentRoadPoints[j] = new Vector3(roadX,0,y);
+                
+                citySlots[roadX,y] = new RoadSlot(RoadSlot.Type.S,0);
 
-                if (j == 0)
+                //Every 4
+                if (j % 2 == 0 && roadX - 1 > 0)
                 {
-                    //There should be a A-road in this slot, so we are going to connect one up
-                    CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
-                    if (roadX - 1 > 0)
-                    {
-                        citySlots[roadX-1,y+1] = new FactorySlot(true, false);
-                    }
-                }
-                else
-                {
-                    //From now on we connect one down
-                    CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+                    //Adding the factory spawn
+                    citySlots[roadX - 1, y] = new FactorySlot(true, false);
                 }
             }
             
@@ -382,27 +379,23 @@ public class RoadThread : ThreadedJob
         for (int i = 1; i <= rightFactoryRoads; i++)
         {
             int roadX = Mathf.RoundToInt(motorwayStartX + (factorySize * i));
-            
+            int distance = citySize / 2 - 2;
             //For the distance between the middle road and the top road, we create a straight line on x
-            Vector3[] currentRoadPoints = new Vector3[citySize / 2]; //This should be half the size
-            for (int j = 0; j < citySize / 2; j++)
+            Vector3[] currentRoadPoints = new Vector3[distance]; //This should be half the size
+            
+            CheckSlotForRoad(roadX,citySize / 2,roadX,citySize / 2, RoadSlot.Type.S, RoadSlot.Type.S,0);
+            for (int j = 0; j < distance; j++)
             {
-                int y = j + citySize / 2;
+                int y = j + citySize / 2 + 1;
                 currentRoadPoints[j] = new Vector3(roadX,0,y);
+                
+                citySlots[roadX,y] = new RoadSlot(RoadSlot.Type.S,0);
 
-                if (j == 0)
+                //Every 4
+                if (j % 2 == 0 && roadX + 1 < 100)
                 {
-                    //There should be a A-road in this slot, so we are going to connect one up
-                    CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
-                    if (roadX + 1 < 100)
-                    {
-                        citySlots[roadX + 1, y + 1] = new FactorySlot(true, true);
-                    }
-                }
-                else
-                {
-                    //From now on we connect one down
-                    CheckSlotForRoad(roadX,y,0,0, RoadSlot.Type.S, RoadSlot.Type.S,0);
+                    //Adding the factory spawn
+                    citySlots[roadX + 1, y] = new FactorySlot(true, true);
                 }
             }
             

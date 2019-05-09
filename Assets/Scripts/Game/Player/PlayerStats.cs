@@ -27,6 +27,8 @@ public class PlayerStats : MonoBehaviour
     private bool hungerLow, thirstLow;
 
     [HideInInspector] public bool isPaused;
+    [SerializeField] private PauseMenuManager pauseMenuManager;
+    [SerializeField] private InventoryManager inventoryManager;
     
     private void Start()
     {
@@ -61,6 +63,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        CheckHealth();
         if (hunger <= 0 && !hungerLow)
         {
             hungerLow = true;
@@ -111,5 +114,31 @@ public class PlayerStats : MonoBehaviour
         {
             StartCoroutine(LowThirst());
         }
+    }
+
+    private void CheckHealth()
+    {
+        if (health < 0)
+        {
+            inventoryManager.CloseUI();
+            pauseMenuManager.SetPauseMenu(true);
+            pauseMenuManager.Dead();
+        }
+    }
+
+    public void Respawn()
+    {
+        Time.timeScale = 1f;
+        
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Respawn");
+        int index = Random.Range(0, spawns.Length);
+
+        transform.position = spawns[index].transform.position;
+        health = maxHealth;
+        hunger = maxHunger;
+        thirst = maxThirst;
+        
+        pauseMenuManager.Continue();
+        inventoryManager.ClearInventory();
     }
 }
