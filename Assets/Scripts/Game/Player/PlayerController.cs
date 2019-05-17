@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEditor;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
@@ -21,10 +22,12 @@ public class PlayerController : MonoBehaviour
     public KeyCode kBackward, kRight, kLeft, kJump, kSprint;
     [SerializeField] private KeyCode kInventory;
     [SerializeField] private KeyCode kScreenshot = KeyCode.F12;
+
+    [Space] 
     
-    [Space]
-    
-    [Header("Movement Settings")]
+    [Header("Movement Settings")] 
+    public bool canMove;
+    public bool canJump;
     [SerializeField] private float movementSpeed;
     [SerializeField] private float breakingSpeed;
     private float maxSpeed;
@@ -47,6 +50,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject miniMap;
 
+    private bool spawnSet;
+
     private void Awake()
     {
         _cameraTransform = transform.GetChild(0);
@@ -54,12 +59,7 @@ public class PlayerController : MonoBehaviour
         maxSpeed = maxWalkingSpeed;
         SetControls();
         Mouse.Lock(true);
-
-        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Respawn");
-        int index = Random.Range(0, spawns.Length - 1);
-        transform.position = spawns[index].transform.position;
     }
-
     private void Update()
     {
         CameraMovement();
@@ -72,8 +72,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
 
+        Movement();
+        
+        if (!spawnSet)
+        {
+            MoveToSpawn();
+            spawnSet = true;
+        }
         if (inUI)
         {
             if (Input.GetKeyDown(kInventory) || Input.GetKeyDown(KeyCode.Escape))
@@ -89,6 +95,13 @@ public class PlayerController : MonoBehaviour
             inUI = true;
             Mouse.Lock(false);
         }
+    }
+    
+    private void MoveToSpawn()
+    {
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Respawn");
+        int index = Random.Range(0, spawns.Length - 1);
+        transform.position = spawns[index].transform.position;
     }
 
     private void Movement()
@@ -108,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
         
         //Checking for keys being pressed
-        if (Input.GetKeyDown(kJump) && isGrounded)
+        if (Input.GetKeyDown(kJump) && isGrounded && canJump)
         {
             isGrounded = false;
             _inputs.y = jumpHeight;
@@ -127,20 +140,20 @@ public class PlayerController : MonoBehaviour
             _inputs.y = 0;
         }
         
-        if (Input.GetKey(kForward))
+        if (Input.GetKey(kForward) && canMove)
         {
             _inputs.z += movementSpeed;    
         }
-        else if (Input.GetKey(kBackward))
+        else if (Input.GetKey(kBackward) && canMove)
         {
             _inputs.z -= movementSpeed;
         }
 
-        if (Input.GetKey(kLeft))
+        if (Input.GetKey(kLeft) && canMove)
         {
             _inputs.x -= movementSpeed;
         }
-        else if (Input.GetKey(kRight))
+        else if (Input.GetKey(kRight) && canMove)
         {
             _inputs.x += movementSpeed;
         }

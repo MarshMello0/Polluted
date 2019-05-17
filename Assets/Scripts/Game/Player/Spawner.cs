@@ -9,34 +9,47 @@ public class Spawner : MonoBehaviour
 {
     
     [SerializeField] private GameObject[] roomPrefabs;
+    [SerializeField] private GameObject[] itemsPrefabs;
     private void OnTriggerEnter(Collider other)
     {
-        Transform room = other.transform;
-        
-        if (other.CompareTag("Room"))
+        Transform transform = other.transform;
+        string tag = other.tag;
+        StartCoroutine(SpawnRoom(tag, transform));
+    }
+
+    private IEnumerator SpawnRoom(string tag, Transform transform)
+    {
+        yield return new WaitForEndOfFrame();
+        switch (tag)
         {
-            //Here this is the first time this room has met the player
-            //So we pick a random room to spawn and store what number we spawned, 
-            //in the game object name
-            int randomRoom = Random.Range(0, roomPrefabs.Length - 1);
-            Instantiate(roomPrefabs[randomRoom], room);
-            room.gameObject.name = randomRoom.ToString();
-            room.tag = "LoadedRoom";
-        }
-        else if (other.CompareTag("LoadedRoom"))
-        {
-            //If these both are true that means,
-            //We have been here before and we want to turn on the room again
-            room.GetChild(0).gameObject.SetActive(true);
+            case "Room":
+                //Here this is the first time this room has met the player
+                //So we pick a random room to spawn and store what number we spawned, 
+                //in the game object name
+                int randomRoom = Random.Range(0, roomPrefabs.Length - 1);
+                Instantiate(roomPrefabs[randomRoom], transform);
+                transform.gameObject.name = randomRoom.ToString();
+                transform.tag = "LoadedRoom";
+                break;
+            case "LoadedRoom":
+                //If these both are true that means,
+                //We have been here before and we want to turn on the room again
+                transform.GetChild(0).gameObject.SetActive(true);
+                break;
+            case "ItemSpawn":
+                int randomItem = Random.Range(0, itemsPrefabs.Length - 1);
+                Instantiate(itemsPrefabs[2]).transform.position = transform.position;
+                transform.tag = "Untagged";
+                break;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Transform room = other.transform;
-        if (room.CompareTag("LoadedRoom"))
+        Transform transform = other.transform;
+        if (transform.CompareTag("LoadedRoom"))
         {
-            room.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 }

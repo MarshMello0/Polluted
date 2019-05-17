@@ -54,6 +54,8 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(DispalyText(tutorialsTexts[0]));
+        SetMovement(false);
+        SetJumping(false);
     }
 
     private void LateUpdate()
@@ -66,6 +68,16 @@ public class TutorialManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.O))
             Skip();
+    }
+
+    private void SetMovement(bool state)
+    {
+        playerController.canMove = state;
+    }
+
+    private void SetJumping(bool state)
+    {
+        playerController.canJump = state;
     }
 
     private void CheckConditions()
@@ -202,6 +214,8 @@ public class TutorialManager : MonoBehaviour
     public void Skip()
     {
         tutorialParent.SetActive(false);
+        SetJumping(true);
+        SetMovement(true);
         pauseMenuManager.finishedTutorial = true;
         enabled = false;
     }
@@ -231,6 +245,16 @@ public class TutorialManager : MonoBehaviour
                     break;
                 
             }
+        }
+
+        if (currentTutorial == 1)
+        {
+            SetMovement(true);
+        }
+
+        if (currentTutorial == 2)
+        {
+            SetJumping(true);
         }
     }
 }

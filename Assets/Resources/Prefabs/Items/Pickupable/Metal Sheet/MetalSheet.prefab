@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 7610798225428349978}
   - component: {fileID: 8008368415309352206}
   - component: {fileID: 3567660370009968772}
-  m_Layer: 0
+  - component: {fileID: 3299724857059066866}
+  - component: {fileID: 1208511424293775311}
+  m_Layer: 12
   m_Name: MetalSheet
-  m_TagString: Untagged
+  m_TagString: Pickupable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,3 +110,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.19999999, y: 0.019999996, z: 0.025482848}
   m_Center: {x: -0.08999999, y: 0, z: 0.0027414262}
+--- !u!114 &3299724857059066866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500787803311802400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b49f5b78e8350140b60b558373a2019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+--- !u!205 &1208511424293775311
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500787803311802400}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.08999999, y: 0, z: 0.0027414262}
+  m_Size: 0.19999999
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.97540206
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7610798225428349978}
+  m_Enabled: 1

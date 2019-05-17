@@ -1,4 +1,6 @@
 ﻿#if UNITY_EDITOR
+using UnityEditor;
+
 public static class Console
 {
     public static void Clear () 
@@ -8,5 +10,11 @@ public static class Console
         var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
         clearMethod.Invoke(null,null);
     }
+
+    public static void PauseState(bool state)
+    {
+        EditorApplication.isPaused = state;
+    }
 }
 #endif
+

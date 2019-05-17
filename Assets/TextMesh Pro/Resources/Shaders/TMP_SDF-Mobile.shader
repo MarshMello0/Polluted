@@ -71,6 +71,7 @@ SubShader {
 
 	Cull [_CullMode]
 	ZWrite Off
+	ZTest Always
 	Lighting Off
 	Fog { Mode Off }
 	ZTest [unity_GUIZTestMode]

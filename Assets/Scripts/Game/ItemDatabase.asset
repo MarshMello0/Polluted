@@ -18,3 +18,27 @@ MonoBehaviour:
     maxStackSize: 20
     description: This is the first item in the game but does nothing
     image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    prefabs: []
+  - displayName: Stick
+    id: 0
+    maxStackSize: 20
+    description: This is a stick
+    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    prefabs:
+    - {fileID: 8914212708949099486, guid: 6022dba50371feb438cb316582fa411a, type: 3}
+    - {fileID: 3976571049598291488, guid: 9329c8c6e399c25449560ab75a0ec112, type: 3}
+    - {fileID: 5072965182699522550, guid: 0d8f44e020c06d5428d56b0827309fd3, type: 3}
+  - displayName: MetalSheet
+    id: 2
+    maxStackSize: 10
+    description: This is a metal sheet
+    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    prefabs:
+    - {fileID: 5500787803311802400, guid: 67027553a79ca49439ac0c38662f7a41, type: 3}
+  - displayName: Log
+    id: 3
+    maxStackSize: 5
+    description: This is a log
+    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    prefabs:
+    - {fileID: 4803236708308669883, guid: 1b5a2801d9065114bafd297d20052a12, type: 3}

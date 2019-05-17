@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -32,6 +34,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GraphicRaycaster m_Raycaster;
     private PointerEventData m_PointerEventData;
     [SerializeField] private EventSystem m_EventSystem;
+    [SerializeField] private Transform dropLocation;
 
     private Item lastDraggedItem;
     private int lastDraggedAmount;
@@ -70,11 +73,34 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(int id, int amount)
     {
+        Item item = itemDataBase.GetItemByID(id);
         for (int i = 0; i < slots.Count; i++)
         {
+            if (slots[i].id == id && amounts[i] + amount < item.maxStackSize)
+            {
+                if (amounts[i] + amount <= item.maxStackSize)
+                {
+                    //We can fill up this slot
+                    amounts[i] += amount;
+                    return;
+                }
+                else
+                {
+                    //Add the remaining to another slot
+                    int previousNumber = amounts[i];
+                    int newAmount = item.maxStackSize;
+                    int leftOver = amount - (newAmount - previousNumber);
+                    
+                    amounts[i] = newAmount;
+                    AddItem(id, leftOver);
+                    return;
+
+                }
+            }
+            
             if (slots[i].id == -1)
             {
-                slots[i] = itemDataBase.GetItemByID(id);
+                slots[i] = item;
                 amounts[i] = amount;
                 Debug.Log(string.Format("Added item into player inventory at slot {0}", i));
                 return;
@@ -349,13 +375,22 @@ public class InventoryManager : MonoBehaviour
                 if (result.gameObject.CompareTag("DropItem") && results.Count == 1)
                 {
                     Debug.Log(string.Format("Item {0} has been dropped", lastDraggedItem.displayName));
+                    try
+                    {
+                        int randomIndex = Random.Range(0, lastDraggedItem.prefabs.Length - 1);
+                        Instantiate(lastDraggedItem.prefabs[randomIndex], dropLocation.position, Quaternion.Euler(0,0,0));
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                    
                     //Clearing the last dragged item
                     lastDraggedItem = null;
                     lastDraggedSlot = -1;
                     lastDraggedAmount = 0;
             
                     isDragging = false;
-                    
                     return;
                 }
             }
@@ -382,13 +417,14 @@ public class InventoryManager : MonoBehaviour
 }
 
 [System.Serializable]
-public class Item
+public partial class Item
 {
     public string displayName;
     public int id;
     public int maxStackSize;
     public string description;
     public Sprite image;
+    public GameObject[] prefabs;
 
     public Item()
     {
@@ -397,6 +433,7 @@ public class Item
         this.maxStackSize = -1;
         this.description = "This is a blank item";
         this.image = null;
+        this.prefabs = null;
     }
     public Item(string displayName, int id,int maxStackSize , string description)
     {
