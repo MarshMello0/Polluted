@@ -11,7 +11,6 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float idleTimeout = 5f;
     [Header("Mouse Look Settings")]
     [SerializeField] private float sensitivity = 15F;
     [SerializeField] private  float minimumY = -60F;
@@ -48,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     [SerializeField] private CharacterController characterController;
 
+    [SerializeField] private IdleTimer idleTimer;
     [HideInInspector]
     public bool inUI;
     private InventoryManager _inventoryManager;
@@ -57,8 +57,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool spawnSet;
     private bool ready = true;
-    private bool hitHead, idleTimerRunning;
-    private Coroutine timer;
+    private bool hitHead;
     
 
     private void Awake()
@@ -131,10 +130,7 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        if (!idleTimerRunning)
-        {
-            timer = StartCoroutine(IdleTimer());
-        }
+        
         //Checking if the player is grounded
         isGrounded = Physics.CheckSphere(groundChecker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
         hitHead = Physics.CheckSphere(headCheacker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
@@ -143,12 +139,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(kSprint))
         {
             maxSpeed = maxSprintSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
         else if (Input.GetKeyUp(kSprint))
         {
             maxSpeed = maxWalkingSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
         
         //Checking for keys being pressed
@@ -156,29 +152,29 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
             _inputs.y = jumpHeight;
-            StopTimer();
+            idleTimer.Active();
         }
         
         if (Input.GetKey(kForward) && canMove)
         {
             _inputs.z += movementSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
         else if (Input.GetKey(kBackward) && canMove)
         {
             _inputs.z -= movementSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
 
         if (Input.GetKey(kLeft) && canMove)
         {
             _inputs.x -= movementSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
         else if (Input.GetKey(kRight) && canMove)
         {
             _inputs.x += movementSpeed;
-            StopTimer();
+            idleTimer.Active();
         }
         
 
@@ -201,12 +197,6 @@ public class PlayerController : MonoBehaviour
         //Slowing down the player back to 0
         _inputs.x = Mathf.Lerp(_inputs.x, 0f, breakingSpeed * Time.fixedDeltaTime);
         _inputs.z = Mathf.Lerp(_inputs.z, 0f, breakingSpeed * Time.fixedDeltaTime);
-    }
-
-    private void StopTimer()
-    {
-        StopCoroutine(timer);
-        idleTimerRunning = false;
     }
 
     private void Gravity()
@@ -317,10 +307,5 @@ public class PlayerController : MonoBehaviour
         body.velocity = pushDir * pushPower;
     }
 
-    private IEnumerator IdleTimer()
-    {
-        idleTimerRunning = true;
-        yield return new WaitForSecondsRealtime(idleTimeout);
-        SceneManager.LoadScene(0);
-    }
+
 }

@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private ItemDatabase itemDataBase;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private IdleTimer idleTimer;
     [Header("UI Items")] 
     [SerializeField] private GameObject backPanel;
     private Dictionary<UIType, GameObject> panels = new Dictionary<UIType, GameObject>();
@@ -73,6 +74,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(int id, int amount)
     {
+        idleTimer.Active();
         Item item = itemDataBase.GetItemByID(id);
         for (int i = 0; i < slots.Count; i++)
         {
@@ -172,6 +174,7 @@ public class InventoryManager : MonoBehaviour
 
     public void OpenUI(UIType uiType)
     {
+        idleTimer.Active();
         backPanel.SetActive(true);
         DisableAllUI();
         UpdateUI();
@@ -202,6 +205,7 @@ public class InventoryManager : MonoBehaviour
 
     public void CloseUI()
     {
+        idleTimer.Active();
         DisableAllUI();
         backPanel.SetActive(false);
     }
@@ -209,6 +213,7 @@ public class InventoryManager : MonoBehaviour
 
     private void DisableAllUI()
     {
+        idleTimer.Active();
         foreach (KeyValuePair<UIType,GameObject> panel in panels)
         {
             panels[panel.Key].SetActive(false);
@@ -243,6 +248,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SlotDrag(int slotNumber, PointerEventData.InputButton inputButton)
     {
+        idleTimer.Active();
         //Checking if there is anything in that slot 
         if (slots[slotNumber].id == -1)
         {
@@ -431,6 +437,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SetItemInfo(bool state, int slotNumber = -1)
     {
+        idleTimer.Active();
         itemInfo.SetActive(state);
         if (state && slotNumber > -1)
         {
@@ -462,6 +469,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Consume(int slotNumber)
     {
+        idleTimer.Active();
         Item item = slots[slotNumber];
         if (item.id != -1)
         {
