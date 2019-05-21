@@ -10714,6 +10714,7 @@ GameObject:
   - component: {fileID: 1159355543}
   - component: {fileID: 1159355544}
   - component: {fileID: 1159355545}
+  - component: {fileID: 1159355546}
   m_Layer: 0
   m_Name: _Scripts
   m_TagString: Untagged
@@ -10855,6 +10856,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sessionStats: {fileID: 0}
+--- !u!114 &1159355546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159355539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f7e303f9a08574bb569ef16b2d7d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleTimeout: 15
 --- !u!1001 &1162380076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18345,6 +18359,7 @@ MonoBehaviour:
   button: {fileID: 846884370}
   itemDataBase: {fileID: 11400000, guid: c16325c3d796adb45823476adf12d6c5, type: 2}
   playerStats: {fileID: 6392254150159696596}
+  idleTimer: {fileID: 1159355546}
   backPanel: {fileID: 84587179}
   itemSlotsHolder: {fileID: 941855841}
   itemInfo: {fileID: 1468257087}
@@ -18374,7 +18389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0653d384eff85f240a9b599ab3963a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTimeout: 15
   sensitivity: 1
   minimumY: -60
   maximumY: 60
@@ -18403,6 +18417,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   characterController: {fileID: 1929866146}
+  idleTimer: {fileID: 1159355546}
   inUI: 0
   miniMap: {fileID: 166313037}
   spawnSet: 0
