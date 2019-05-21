@@ -18374,6 +18374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0653d384eff85f240a9b599ab3963a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleTimeout: 15
   sensitivity: 1
   minimumY: -60
   maximumY: 60
