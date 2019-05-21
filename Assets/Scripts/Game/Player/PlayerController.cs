@@ -77,16 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(TakeScreenShot());
         }
-    }
-
-    private void FixedUpdate()
-    {
-        Gravity();
-        if (!spawnSet)
-        {
-            MoveToSpawn();
-            spawnSet = true;
-        }
+        
         if (inUI)
         {
             if (Input.GetKeyDown(kInventory) || Input.GetKeyDown(KeyCode.Escape))
@@ -107,6 +98,17 @@ public class PlayerController : MonoBehaviour
             Mouse.Lock(false);
             StartCoroutine(InvKey(false));
         }
+    }
+
+    private void FixedUpdate()
+    {
+        Gravity();
+        if (!spawnSet)
+        {
+            MoveToSpawn();
+            spawnSet = true;
+        }
+        
     }
 
     private IEnumerator InvKey(bool state)

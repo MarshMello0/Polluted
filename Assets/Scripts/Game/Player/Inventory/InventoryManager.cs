@@ -76,7 +76,7 @@ public class InventoryManager : MonoBehaviour
         Item item = itemDataBase.GetItemByID(id);
         for (int i = 0; i < slots.Count; i++)
         {
-            if (slots[i].id == id && amounts[i] + amount < item.maxStackSize)
+            if (slots[i].id == id && amounts[i] + amount <= item.maxStackSize)
             {
                 if (amounts[i] + amount <= item.maxStackSize)
                 {
@@ -452,6 +452,11 @@ public class InventoryManager : MonoBehaviour
                 itemInfo.SetActive(false);
             }
 
+        }
+
+        if (!state)
+        {
+            button.callBack.RemoveAllListeners();
         }
     }
 
