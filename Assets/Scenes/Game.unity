@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.06935264, g: 0.0902185, b: 0.13293135, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5729,6 +5729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b1bb51521b0ad448a23891c46ddb96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsParent: {fileID: 395471144}
   roomPrefabs:
   - {fileID: 3460063074739861383, guid: a73a4c945a31c6b4e986b00a8aac77f8, type: 3}
   - {fileID: 4749563668083125232, guid: 7df658709b603d54fa320f54ddf7518b, type: 3}
@@ -10712,6 +10713,7 @@ GameObject:
   - component: {fileID: 1159355542}
   - component: {fileID: 1159355543}
   - component: {fileID: 1159355544}
+  - component: {fileID: 1159355545}
   m_Layer: 0
   m_Name: _Scripts
   m_TagString: Untagged
@@ -10840,6 +10842,19 @@ MonoBehaviour:
   settings: []
   defaultSettings: {fileID: 11400000, guid: 72541c2ea7dd3fe48a5756e05cf6a8fe, type: 2}
   controlsUi: {fileID: 1159355542}
+--- !u!114 &1159355545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159355539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfb2266d4e169354ebccd3b99432dcdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sessionStats: {fileID: 0}
 --- !u!1001 &1162380076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18246,6 +18261,7 @@ MonoBehaviour:
   kInteract: 101
   cameraTransform: {fileID: 1994157771}
   inventoryManager: {fileID: 1929866144}
+  sessionStats: {fileID: 0}
 --- !u!23 &1929866140
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -9,7 +9,8 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class Spawner : MonoBehaviour
 {
-    
+
+    [SerializeField] private Transform itemsParent;
     [SerializeField] private GameObject[] roomPrefabs;
     [SerializeField] private ItemDatabase itemDatabase;
     private void OnTriggerEnter(Collider other)
@@ -52,7 +53,7 @@ public class Spawner : MonoBehaviour
                 if (itemDatabase.items[randomItem].prefabs.Length != 0)
                 {
                     randomPrefab = Random.Range(0, itemDatabase.items[randomItem].prefabs.Length - 1);
-                    Instantiate(itemDatabase.items[randomItem].prefabs[randomPrefab]).transform.position = transform.position;
+                    Instantiate(itemDatabase.items[randomItem].prefabs[randomPrefab], itemsParent).transform.position = transform.position;
                 }
                 
                 transform.tag = "Untagged";

@@ -62,10 +62,6 @@ public class InventoryManager : MonoBehaviour
         {
             slotsTransform.Add(itemSlotsHolder.GetChild(i));
         }
-        
-        AddItem(1,19);
-        AddItem(1,10);
-        AddItem(1,1);
     }
 
     private void Update()

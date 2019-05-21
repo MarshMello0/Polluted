@@ -15,7 +15,13 @@ public class ItemController : MonoBehaviour
     [SerializeField] private KeyCode kInteract;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private InventoryManager inventoryManager;
-    
+    [SerializeField] private SessionStats sessionStats;
+
+    private void Start()
+    {
+        sessionStats = GameObject.FindWithTag("GameInfo").GetComponent<SessionStats>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(kInteract))
@@ -38,6 +44,7 @@ public class ItemController : MonoBehaviour
                     PickableItem item = hit.transform.GetComponent<PickableItem>();
                     inventoryManager.AddItem(item.id, 1);
                     Destroy(hit.transform.gameObject);
+                    sessionStats.totalPickedUpItems++;
                     break;
             }
         }
