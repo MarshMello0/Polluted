@@ -302,6 +302,33 @@ public class RoadGenerator : MonoBehaviour
                     loading.numberOfActionsCompleted++;
                 }
             }
+            
+            GameObject gameObject18 = new GameObject("Minimap Lines");
+            gameObject18.transform.SetParent(parent.transform);
+            gameObject18.transform.localPosition = new Vector3(0f, 100f, 0f);
+            for (int num3 = 0; num3 < roadThread.roads.Count; num3++)
+            {
+                GameObject last = Instantiate(roadDebugLine, gameObject18.transform);
+                last.layer = 15;
+                last.name = string.Format("{0}{1} Road", roadThread.roads[num3].roadType.ToString(), num3);
+                LineRenderer lineRenderer = last.GetComponent<LineRenderer>();
+                lineRenderer.positionCount = roadThread.roads[num3].points.Length;
+                for (int num4 = 0; num4 < lineRenderer.positionCount; num4++)
+                {
+                    Vector3 position3 = new Vector3((roadThread.roads[num3].points[num4].x + roadThread.position.x) * (float)RoadGenerator.cityScale - scaleBackX, (roadThread.roads[num3].points[num4].y + roadThread.position.y) * (float)RoadGenerator.cityScale + gameObject18.transform.position.y, (roadThread.roads[num3].points[num4].z + roadThread.position.z) * (float)RoadGenerator.cityScale - scaleBackZ);
+                    lineRenderer.SetPosition(num4, position3);
+                }
+                if (roadThread.roads[num3].roadType == RoadType.M)
+                {
+                    lineRenderer.startColor = Color.blue;
+                    lineRenderer.endColor = Color.blue;
+                }
+                else if (roadThread.roads[num3].roadType == RoadType.A)
+                {
+                    lineRenderer.startColor = Color.green;
+                    lineRenderer.endColor = Color.green;
+                }
+            }
         }
         
         city = lastCity;

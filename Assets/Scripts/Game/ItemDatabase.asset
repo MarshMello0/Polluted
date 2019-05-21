@@ -26,12 +26,12 @@ MonoBehaviour:
     id: 0
     maxStackSize: 20
     description: This is a stick
-    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    image: {fileID: 21300000, guid: 7253e5b4098e29d4283f0737e712d296, type: 3}
     prefabs:
     - {fileID: 8914212708949099486, guid: 6022dba50371feb438cb316582fa411a, type: 3}
     - {fileID: 3976571049598291488, guid: 9329c8c6e399c25449560ab75a0ec112, type: 3}
     - {fileID: 5072965182699522550, guid: 0d8f44e020c06d5428d56b0827309fd3, type: 3}
-    isConsumeable: 1
+    isConsumeable: 0
     hungerIncrease: 99
     thirstIncrease: 99
   - displayName: MetalSheet
@@ -47,7 +47,7 @@ MonoBehaviour:
     id: 3
     maxStackSize: 5
     description: 'A log from a tree, in a world without trees :thinking:'
-    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    image: {fileID: 21300000, guid: b49fc8d0c2f307748943b739b55b79e5, type: 3}
     prefabs:
     - {fileID: 4803236708308669883, guid: 1b5a2801d9065114bafd297d20052a12, type: 3}
     isConsumeable: 0
@@ -57,27 +57,27 @@ MonoBehaviour:
     id: 4
     maxStackSize: 2
     description: Some nice crunchy cereal, great without milk.
-    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    image: {fileID: 21300000, guid: 94c523d5f1e65b9489dbdd778db044cd, type: 3}
     prefabs:
     - {fileID: 1177492803562576585, guid: 109c32d3abd65c04d95806af7558d924, type: 3}
     isConsumeable: 1
-    hungerIncrease: 50
+    hungerIncrease: 10
     thirstIncrease: -5
   - displayName: Tinned Food
     id: 5
     maxStackSize: 10
     description: Emulated home cooking in a tin.
-    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    image: {fileID: 21300000, guid: ba6b90bc6e49f49458518ce6c492e23d, type: 3}
     prefabs:
     - {fileID: 4168350585255269237, guid: 1cc74a61ec60ea04ca900a0155dfd19f, type: 3}
     isConsumeable: 1
-    hungerIncrease: 50
-    thirstIncrease: 50
+    hungerIncrease: 25
+    thirstIncrease: 25
   - displayName: Carton of Juice
     id: 6
     maxStackSize: 1
     description: A carton of juice that your mum forgot to pack in your lunch box.
-    image: {fileID: 21300000, guid: ed116ff3159a63b4593ab4e9c6b3a639, type: 3}
+    image: {fileID: 21300000, guid: 48f2d02460d7d404c93eb558ade089c8, type: 3}
     prefabs:
     - {fileID: 4803236708308669883, guid: 1b5a2801d9065114bafd297d20052a12, type: 3}
     isConsumeable: 1
