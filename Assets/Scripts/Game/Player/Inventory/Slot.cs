@@ -24,8 +24,25 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerDown(PointerEventData eventData)
     {
         StopAllCoroutines();
+        StartCoroutine(Click(eventData));
+    }
+
+    IEnumerator Click(PointerEventData eventData)
+    {
+        float waitTime = 0.15f;
+        float currentTime = 0;
+        while (currentTime < waitTime)
+        {
+            if (!Input.GetMouseButton((int)eventData.button))
+            {
+                inventoryManager.SetItemInfo(true, slotNumber);
+                StopAllCoroutines();
+            }
+            currentTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
         inventoryManager.SlotDrag(slotNumber, eventData.button);
-        
+        yield return null;
     }
 
     IEnumerator HoverTimer()

@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
 {
     
     [SerializeField] private GameObject[] roomPrefabs;
-    [SerializeField] private GameObject[] itemsPrefabs;
+    [SerializeField] private ItemDatabase itemDatabase;
     private void OnTriggerEnter(Collider other)
     {
         Transform transform = other.transform;
@@ -37,8 +37,14 @@ public class Spawner : MonoBehaviour
                 transform.GetChild(0).gameObject.SetActive(true);
                 break;
             case "ItemSpawn":
-                int randomItem = Random.Range(0, itemsPrefabs.Length - 1);
-                Instantiate(itemsPrefabs[2]).transform.position = transform.position;
+                int randomItem = Random.Range(0, itemDatabase.items.Count - 1);
+                int randomPrefab = 0;
+                if (itemDatabase.items[randomItem].prefabs.Length != 0)
+                {
+                    randomPrefab = Random.Range(0, itemDatabase.items[randomItem].prefabs.Length - 1);
+                    Instantiate(itemDatabase.items[randomItem].prefabs[randomPrefab]).transform.position = transform.position;
+                }
+                
                 transform.tag = "Untagged";
                 break;
         }

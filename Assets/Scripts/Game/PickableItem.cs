@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 public class PickableItem : MonoBehaviour
 {
     public int id;
-
+    
     [SerializeField] private GameObject itemInfo;
     [SerializeField] private TextMeshPro text;
     [SerializeField] private ItemDatabase itemDatabase;
@@ -40,7 +40,7 @@ public class PickableItem : MonoBehaviour
         {
             itemInfo.transform.LookAt(player);
             Vector3 newPos = transform.position;
-            newPos.y = transform.position.y + 0.1f;
+            newPos.y = transform.position.y + 0.3f;
             itemInfo.transform.position = new Vector3(newPos.x, newPos.y, newPos.z);
         }
     }

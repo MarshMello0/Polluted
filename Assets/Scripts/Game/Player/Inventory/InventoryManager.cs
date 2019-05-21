@@ -12,13 +12,17 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private int inventorySize;
     [SerializeField] private List<Item> slots = new List<Item>();
     [SerializeField] private List<int> amounts = new List<int>();
+    [SerializeField] private TMPButton button;
 
     [SerializeField] private ItemDatabase itemDataBase;
-
+    [SerializeField] private PlayerStats playerStats;
     [Header("UI Items")] 
     [SerializeField] private GameObject backPanel;
     private Dictionary<UIType, GameObject> panels = new Dictionary<UIType, GameObject>();
     [SerializeField] private Transform itemSlotsHolder;
+    [SerializeField] private GameObject itemInfo, consumeButton;
+    [SerializeField] private TextMeshProUGUI titleText, itemText;
+    [SerializeField] private Image itemImage;
 
     [Header("Tool Tip Items")] 
     [SerializeField] private RectTransform toolTipHolder;
@@ -130,6 +134,21 @@ public class InventoryManager : MonoBehaviour
     public void RemoveItem(int slot)
     {
         slots[slot] = new Item();
+        amounts[slot] = 0;
+        if (backPanel.activeInHierarchy)
+        {
+            UpdateUI();
+        }
+    }
+
+    public void TakeItem(int slot, int amount = 1)
+    {
+        amounts[slot] -= amount;
+        if (amounts[slot] <= 0)
+        {
+            Debug.Log(" creating new item");
+            slots[slot] = new Item();
+        }
         if (backPanel.activeInHierarchy)
         {
             UpdateUI();
@@ -274,6 +293,7 @@ public class InventoryManager : MonoBehaviour
         dragSlot.gameObject.SetActive(true);
         dragSlotImage.sprite = lastDraggedItem.image;
         dragSlotAmount.text = lastDraggedAmount.ToString();
+        SetItemInfo(false);
         isDragging = true;
     }
 
@@ -412,12 +432,53 @@ public class InventoryManager : MonoBehaviour
 
         }
     }
-    
+
+    public void SetItemInfo(bool state, int slotNumber = -1)
+    {
+        itemInfo.SetActive(state);
+        if (state && slotNumber > -1)
+        {
+            Item item = slots[slotNumber];
+            if (item.id != -1)
+            {
+                titleText.text = "Item: " + item.displayName;
+                itemText.text = item.description;
+                itemImage.sprite = item.image;
+                consumeButton.SetActive(item.isConsumeable);
+                if (item.isConsumeable)
+                {
+                    //Add button click listener
+                    button.callBack.AddListener(delegate {Consume(slotNumber); });
+                }
+            }
+            else
+            {
+                itemInfo.SetActive(false);
+            }
+
+        }
+    }
+
+    public void Consume(int slotNumber)
+    {
+        Item item = slots[slotNumber];
+        if (item.id != -1)
+        {
+            playerStats.hunger += item.hungerIncrease;
+            playerStats.thirst += item.thirstIncrease;
+            TakeItem(slotNumber, 1);
+        }
+
+        if (amounts[slotNumber] == 0)
+        {
+            SetItemInfo(false);
+        }
+    }
     
 }
 
 [System.Serializable]
-public partial class Item
+public class Item
 {
     public string displayName;
     public int id;
@@ -425,7 +486,9 @@ public partial class Item
     public string description;
     public Sprite image;
     public GameObject[] prefabs;
-
+    public bool isConsumeable;
+    public float hungerIncrease, thirstIncrease;
+    
     public Item()
     {
         this.displayName = "Blank";

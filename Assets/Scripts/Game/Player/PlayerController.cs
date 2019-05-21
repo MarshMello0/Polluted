@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Experimental.Rendering;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject miniMap;
 
     private bool spawnSet;
+    private bool ready = true;
 
     private void Awake()
     {
@@ -84,17 +87,33 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(kInventory) || Input.GetKeyDown(KeyCode.Escape))
             {
-                _inventoryManager.CloseUI();
-                inUI = false;
-                Mouse.Lock(true);
+                if (ready)
+                {
+                    _inventoryManager.CloseUI();
+                    inUI = false;
+                    Mouse.Lock(true);
+                    StartCoroutine(InvKey(false));
+                }
             }
         }
-        else if (Input.GetKeyDown(kInventory) && !inUI)
+        else if (ready && Input.GetKeyDown(kInventory) && !inUI)
         {
             _inventoryManager.OpenUI(InventoryManager.UIType.Inventory);
             inUI = true;
             Mouse.Lock(false);
+            StartCoroutine(InvKey(false));
         }
+    }
+
+    private IEnumerator InvKey(bool state)
+    {
+        ready = false;
+        yield return new WaitForSecondsRealtime(0.2f);
+        while (Input.GetKey(kInventory) == state)
+        {
+            yield return null;
+        }
+        ready = true;
     }
     
     private void MoveToSpawn()
