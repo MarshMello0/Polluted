@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject miniMap;
 
-    private bool spawnSet;
+    [HideInInspector]
+    public bool spawnSet;
     private bool ready = true;
+    private bool hitHead;
 
     private void Awake()
     {
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CameraMovement();
-
+        Movement();
         if (Input.GetKeyDown(kScreenshot))
         {
             StartCoroutine(TakeScreenShot());
@@ -75,9 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        Movement();
-        
+        Gravity();
         if (!spawnSet)
         {
             MoveToSpawn();
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         //Checking if the player is grounded
         isGrounded = Physics.CheckSphere(groundChecker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
-        bool hitHead = Physics.CheckSphere(headCheacker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
+        hitHead = Physics.CheckSphere(headCheacker.position, groundDistance, floorMask, QueryTriggerInteraction.Ignore);
         
         //Checking to see if they are sprinting
         if (Input.GetKeyDown(kSprint))
@@ -144,19 +144,6 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
             _inputs.y = jumpHeight;
-        }
-        else if (isGrounded)
-        {
-            _inputs.y = gravity;
-        }
-        else if (!isGrounded)
-        {
-            _inputs.y -= gravityIncrease;
-        }
-        //Because there is no rigidbody, we need to make our own physics
-        if (hitHead && _inputs.y > 0)
-        {
-            _inputs.y = 0;
         }
         
         if (Input.GetKey(kForward) && canMove)
@@ -197,6 +184,29 @@ public class PlayerController : MonoBehaviour
         //Slowing down the player back to 0
         _inputs.x = Mathf.Lerp(_inputs.x, 0f, breakingSpeed * Time.fixedDeltaTime);
         _inputs.z = Mathf.Lerp(_inputs.z, 0f, breakingSpeed * Time.fixedDeltaTime);
+    }
+
+    private void Gravity()
+    {
+        //Checking for keys being pressed
+        if (Input.GetKeyDown(kJump) && isGrounded && canJump)
+        {
+            
+        }
+        else if (isGrounded)
+        {
+            _inputs.y = gravity;
+        }
+        else if (!isGrounded)
+        {
+            _inputs.y -= gravityIncrease;
+        }
+        
+        //Because there is no rigidbody, we need to make our own physics
+        if (hitHead && _inputs.y > 0)
+        {
+            _inputs.y = 0;
+        }
     }
 
     private void CameraMovement()

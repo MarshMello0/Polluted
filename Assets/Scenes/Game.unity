@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06935264, g: 0.0902185, b: 0.13293135, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4616,6 +4616,36 @@ MonoBehaviour:
   blendDistance: 10
   weight: 1
   priority: 0
+--- !u!1 &395471143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395471144}
+  m_Layer: 0
+  m_Name: Dropped Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &395471144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395471143}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1775.0128, y: 92.29332, z: 270.33643}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &423889118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18358,6 +18388,7 @@ MonoBehaviour:
   characterController: {fileID: 1929866146}
   inUI: 0
   miniMap: {fileID: 166313037}
+  spawnSet: 0
 --- !u!143 &1929866146
 CharacterController:
   m_ObjectHideFlags: 0
@@ -21422,6 +21453,7 @@ MonoBehaviour:
   isPaused: 0
   pauseMenuManager: {fileID: 1159355540}
   inventoryManager: {fileID: 1929866144}
+  playerController: {fileID: 1929866145}
 --- !u!81 &6392254151073884816
 AudioListener:
   m_ObjectHideFlags: 0

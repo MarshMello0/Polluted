@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// This script is what spawns the rooms and items in those rooms around the player
@@ -26,9 +28,17 @@ public class Spawner : MonoBehaviour
                 //Here this is the first time this room has met the player
                 //So we pick a random room to spawn and store what number we spawned, 
                 //in the game object name
-                int randomRoom = Random.Range(0, roomPrefabs.Length - 1);
-                Instantiate(roomPrefabs[randomRoom], transform);
-                transform.gameObject.name = randomRoom.ToString();
+                try
+                {
+                    int randomRoom = Random.Range(0, roomPrefabs.Length);
+                    Instantiate(roomPrefabs[randomRoom], transform);
+                    transform.gameObject.name = randomRoom.ToString();
+                }
+                catch (Exception e)
+                {
+
+                }
+                
                 transform.tag = "LoadedRoom";
                 break;
             case "LoadedRoom":

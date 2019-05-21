@@ -29,6 +29,7 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector] public bool isPaused;
     [SerializeField] private PauseMenuManager pauseMenuManager;
     [SerializeField] private InventoryManager inventoryManager;
+    [SerializeField] private PlayerController playerController;
     
     private void Start()
     {
@@ -128,12 +129,8 @@ public class PlayerStats : MonoBehaviour
 
     public void Respawn()
     {
-        Time.timeScale = 1f;
+        playerController.spawnSet = false;
         
-        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Respawn");
-        int index = Random.Range(0, spawns.Length);
-
-        transform.position = spawns[index].transform.position;
         health = maxHealth;
         hunger = maxHunger;
         thirst = maxThirst;
