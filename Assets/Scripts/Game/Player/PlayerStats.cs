@@ -65,6 +65,7 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         CheckHealth();
+        HealthRegen();
         if (hunger <= 0 && !hungerLow)
         {
             hungerLow = true;
@@ -137,5 +138,16 @@ public class PlayerStats : MonoBehaviour
         
         pauseMenuManager.Continue();
         inventoryManager.ClearInventory();
+    }
+
+    private void HealthRegen()
+    {
+        if (hunger > maxHunger * 0.9f && thirst > maxThirst * 0.9f)
+        {
+            health += 0.1f;
+        }
+
+        if (health >= maxHealth)
+            health = maxHealth;
     }
 }

@@ -12,7 +12,7 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> panelsList;
 
-    [SerializeField] private GameObject mainSection, pauseMenu, miniMap, tutorial;
+    [SerializeField] private GameObject mainSection, pauseMenu, miniMap, tutorial, crosshair, welcometext;
 
     [HideInInspector] public bool finishedTutorial;
     [HideInInspector] public bool isPaused;
@@ -81,7 +81,8 @@ public class PauseMenuManager : MonoBehaviour
         Mouse.Lock(!state);
         pauseMenu.SetActive(state);
         miniMap.SetActive(!state);
-        
+        crosshair.SetActive(!state);
+        welcometext.SetActive(!state);
         if (!finishedTutorial)
             tutorial.SetActive(!state);
 

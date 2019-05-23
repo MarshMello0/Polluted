@@ -8,12 +8,16 @@ public class IdleTimer : MonoBehaviour
     private bool idleTimerRunning;
     private Coroutine timer;
 
+    [SerializeField] private bool stopTimer;
     private void Update()
     {
         if (!idleTimerRunning)
         {
             timer = StartCoroutine(Idle());
         }
+        
+        if (stopTimer)
+            Active();
     }
 
     public void Active()

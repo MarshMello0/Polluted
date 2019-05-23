@@ -29,7 +29,7 @@ public class RoadGenerator : MonoBehaviour
     //Cities
     public City city;
 
-    [SerializeField] private GameObject player, miniMap;
+    [SerializeField] private GameObject player, miniMap, crosshair;
     [SerializeField] private List<Road> connectingRoads = new List<Road>();
 
     private Loading loading;
@@ -350,6 +350,7 @@ public class RoadGenerator : MonoBehaviour
             {
                 player.SetActive(true);
                 miniMap.SetActive(true);
+                crosshair.SetActive(true);
                 SceneManager.UnloadSceneAsync(1);
                 isLoading = false;
             }

@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject itemInfo, consumeButton;
     [SerializeField] private TextMeshProUGUI titleText, itemText;
     [SerializeField] private Image itemImage;
+    [SerializeField] private GameObject crosshair;
 
     [Header("Tool Tip Items")] 
     [SerializeField] private RectTransform toolTipHolder;
@@ -183,6 +184,8 @@ public class InventoryManager : MonoBehaviour
             case UIType.Inventory:
                 break;
         }
+        crosshair.SetActive(false);
+        Debug.Log("Crosshair has been disabled");
     }
 
     private void UpdateUI()
@@ -208,6 +211,8 @@ public class InventoryManager : MonoBehaviour
         idleTimer.Active();
         DisableAllUI();
         backPanel.SetActive(false);
+        crosshair.SetActive(true);
+        Debug.Log("Cross Hair has been enabled");
     }
     
 

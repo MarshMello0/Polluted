@@ -18,12 +18,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject tutorialParent;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseMenuManager pauseMenuManager;
+    [SerializeField] private DisplayCityName displayCityName;
     [Header("Typing Delays")] 
     [SerializeField] private float fullStop;
     [SerializeField] private float comma;
     [SerializeField] private float letters;
 
-    private bool forwardPressed, leftPressed, backPressed, rightPressed, jumpPressed, sprintPressed;
+    private bool forwardPressed, leftPressed, backPressed, rightPressed, jumpPressed, sprintPressed, interactPressed;
+    private bool readyForInteract;
 
     private void Awake()
     {
@@ -45,6 +47,9 @@ public class TutorialManager : MonoBehaviour
             string.Format("Press {0} to jump and {1} to sprint.",
                 playerController.kJump.ToString(),
                 playerController.kSprint.ToString()));
+        tutorialsTexts.Add(
+            string.Format("Use {0} to pick up items and place them in your inventory, once they are in your inventory you can click on them to see information about that item.",
+                KeyCode.E.ToString()));
         
         tutorialsTexts.Add("Well done, you completed this complex tutorial.");
 
@@ -80,6 +85,16 @@ public class TutorialManager : MonoBehaviour
         playerController.canJump = state;
     }
 
+    private bool CanMove()
+    {
+        return playerController.canMove;
+    }
+
+    private bool CanJump()
+    {
+        return playerController.canJump;
+    }
+
     private void CheckConditions()
     {
         switch (currentTutorial)
@@ -89,7 +104,7 @@ public class TutorialManager : MonoBehaviour
                     nextButton.SetActive(true);
                 break;
             case  1:
-                if (Input.GetKeyDown(playerController.kForward) && !forwardPressed)
+                if (Input.GetKeyDown(playerController.kForward) && !forwardPressed && CanMove())
                 {
                     string[] keyArray = {playerController.kForward.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -102,7 +117,7 @@ public class TutorialManager : MonoBehaviour
                     text.text = newText;
                     forwardPressed = true;
                 }
-                else if (Input.GetKeyDown(playerController.kLeft) && !leftPressed)
+                else if (Input.GetKeyDown(playerController.kLeft) && !leftPressed && CanMove())
                 {
                     string[] keyArray = {playerController.kLeft.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -115,7 +130,7 @@ public class TutorialManager : MonoBehaviour
                     text.text = newText;
                     leftPressed = true;
                 }
-                else if (Input.GetKeyDown(playerController.kBackward) && !backPressed)
+                else if (Input.GetKeyDown(playerController.kBackward) && !backPressed && CanMove())
                 {
                     string[] keyArray = {playerController.kBackward.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -128,7 +143,7 @@ public class TutorialManager : MonoBehaviour
                     text.text = newText;
                     backPressed = true;
                 } 
-                else if (Input.GetKeyDown(playerController.kRight) && !rightPressed)
+                else if (Input.GetKeyDown(playerController.kRight) && !rightPressed && CanMove())
                 {
                     string[] keyArray = {playerController.kRight.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -148,7 +163,7 @@ public class TutorialManager : MonoBehaviour
                 }
                 break;
             case 2:
-                if (Input.GetKeyDown(playerController.kJump) && !jumpPressed)
+                if (Input.GetKeyDown(playerController.kJump) && !jumpPressed && CanJump())
                 {
                     string[] keyArray = {playerController.kJump.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -163,7 +178,7 @@ public class TutorialManager : MonoBehaviour
                     text.text = newText;
                     jumpPressed = true;
                 }
-                else if (Input.GetKeyDown(playerController.kSprint) && !sprintPressed)
+                else if (Input.GetKeyDown(playerController.kSprint) && !sprintPressed && CanJump())
                 {
                     string[] keyArray = {playerController.kSprint.ToString()};
                     string[] split = text.text.Split(keyArray, StringSplitOptions.None);
@@ -184,6 +199,26 @@ public class TutorialManager : MonoBehaviour
                 }
                 break;
             case 3:
+                if (Input.GetKeyDown(KeyCode.E) && !interactPressed && readyForInteract)
+                {
+                    string[] keyArray = {KeyCode.E.ToString()};
+                    string[] split = text.text.Split(keyArray, StringSplitOptions.None);
+                    string newText = split[0] + "<color=#008000ff>" + KeyCode.E +
+                                     "</color>";
+                    
+                    for (int i = 1; i < split.Length; i++)
+                    {
+                        newText += split[i];
+                    }
+                    text.text = newText;
+                    interactPressed = true;
+                }
+                if (interactPressed && !nextButton.activeInHierarchy)
+                {
+                    nextButton.SetActive(true);
+                }
+                break;
+            case 4:
                 if (!nextButton.activeInHierarchy)
                     nextButton.SetActive(true);
                 break;
@@ -203,6 +238,7 @@ public class TutorialManager : MonoBehaviour
         {
             tutorialParent.SetActive(false);
             pauseMenuManager.finishedTutorial = true;
+            displayCityName.DisplayName();
             enabled = false;
         }
         else
@@ -217,6 +253,7 @@ public class TutorialManager : MonoBehaviour
         SetJumping(true);
         SetMovement(true);
         pauseMenuManager.finishedTutorial = true;
+        displayCityName.DisplayName();
         enabled = false;
     }
 
@@ -255,6 +292,11 @@ public class TutorialManager : MonoBehaviour
         if (currentTutorial == 2)
         {
             SetJumping(true);
+        }
+
+        if (currentTutorial == 3)
+        {
+            readyForInteract = true;
         }
     }
 }
